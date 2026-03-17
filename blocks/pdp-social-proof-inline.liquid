@@ -43,9 +43,6 @@
             {% else %}
               <span class="pdp-inline-social-proof__avatar pdp-inline-social-proof__avatar--placeholder"></span>
             {% endif %}
-            <span class="pdp-inline-social-proof__play">
-              {{ 'icon-play.svg' | inline_asset_content }}
-            </span>
           </button>
 
           <dialog
@@ -155,24 +152,6 @@
   .pdp-inline-social-proof__avatar--placeholder {
     display: block;
     background: #d7d4ca;
-  }
-
-  .pdp-inline-social-proof__play {
-    position: absolute;
-    right: -0.125rem;
-    bottom: -0.125rem;
-    display: grid;
-    place-items: center;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 2px 10px rgb(0 0 0 / 12%);
-  }
-
-  .pdp-inline-social-proof__play svg {
-    width: 0.75rem;
-    height: 0.75rem;
   }
 
   .pdp-inline-social-proof__dialog {
