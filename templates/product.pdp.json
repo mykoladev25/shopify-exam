@@ -292,10 +292,69 @@
       "settings": {
         "color_scheme": "scheme-1"
       }
+    },
+    "pdp_benefit_rotator": {
+      "type": "pdp-benefit-rotator",
+      "blocks": {
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "label": "Neurological & Mental Health",
+            "title": "Neurological & Mental Health",
+            "description": "<p>Grounding helps calm and stabilize the nervous system, supporting those dealing with:</p><ul><li>Migraines & headaches</li><li>Neuropathy & brain fog</li><li>Anxiety, depression & mood swings</li><li>ADHD & focus issues</li><li>Insomnia & disrupted sleep</li></ul>",
+            "link_label": "Explore the science behind these benefits"
+          }
+        }
+      },
+      "block_order": ["benefit_1"],
+      "settings": {
+        "heading": "<p>One Natural Solution. Whole-Body Benefits.</p>",
+        "body": "<p>You may be missing the Earth’s most powerful remedy. Grounding restores your connection to it, helping reduce inflammation, calm your system, and support deep, uninterrupted sleep.</p>",
+        "rotate_seconds": 10,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "pdp_comparison_table": {
+      "type": "pdp-comparison-table",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "highlight": true,
+            "solution": "Terra Therapy",
+            "how_it_works": "Reconnects body to Earth’s natural charge to reduce inflammation and improve sleep",
+            "what_to_consider": "Requires grounded outlet and direct skin contact for best results",
+            "cost_over_time": "One-time purchase",
+            "side_effects": "None - 100% safe, drug-free"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "solution": "Sleeping Pills",
+            "how_it_works": "Sedate the brain with sleep-inducing chemicals",
+            "what_to_consider": "Tolerance builds, grogginess, not long-term safe",
+            "cost_over_time": "Ongoing",
+            "side_effects": "Dependency & side effects"
+          }
+        }
+      },
+      "block_order": ["row_1", "row_2"],
+      "settings": {
+        "heading": "Why We Are Really Different",
+        "col_solution": "Solution",
+        "col_how": "How it works",
+        "col_consider": "What to consider",
+        "col_cost": "Cost over time",
+        "col_side_effects": "Side effects",
+        "color_scheme": "scheme-1"
+      }
     }
   },
   "order": [
     "main",
-    "pdp_guarantee_bar"
+    "pdp_guarantee_bar",
+    "pdp_benefit_rotator",
+    "pdp_comparison_table"
   ]
 }

@@ -1,0 +1,391 @@
+<div class="pdp-comparison section section--page-width color-{{ section.settings.color_scheme }}">
+  <div class="pdp-comparison__inner">
+    {% if section.settings.heading != blank %}
+      <h2 class="pdp-comparison__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="pdp-comparison__desktop">
+      <div class="pdp-comparison__table-wrap">
+        <table class="pdp-comparison__table">
+          <thead>
+            <tr>
+              <th>{{ section.settings.col_solution | escape }}</th>
+              <th>{{ section.settings.col_how | escape }}</th>
+              <th>{{ section.settings.col_consider | escape }}</th>
+              <th>{{ section.settings.col_cost | escape }}</th>
+              <th>{{ section.settings.col_side_effects | escape }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for block in section.blocks %}
+              <tr class="{% if block.settings.highlight %}is-highlighted{% endif %}" {{ block.shopify_attributes }}>
+                <th class="pdp-comparison__solution-cell">
+                  {% if block.settings.icon != blank %}
+                    {{
+                      block.settings.icon
+                      | image_url: width: 120
+                      | image_tag:
+                        class: 'pdp-comparison__solution-icon',
+                        loading: 'lazy',
+                        widths: '60,90,120',
+                        sizes: '48px',
+                        alt: block.settings.solution
+                    }}
+                  {% endif %}
+                  <span>{{ block.settings.solution | escape }}</span>
+                </th>
+                <td>{{ block.settings.how_it_works }}</td>
+                <td>{{ block.settings.what_to_consider }}</td>
+                <td>{{ block.settings.cost_over_time }}</td>
+                <td>{{ block.settings.side_effects }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pdp-comparison__mobile">
+      <div class="pdp-comparison__cards" data-comparison-cards>
+        {% for block in section.blocks %}
+          <article class="pdp-comparison__card{% if block.settings.highlight %} is-highlighted{% endif %}" {{ block.shopify_attributes }}>
+            <div class="pdp-comparison__card-solution">
+              {% if block.settings.icon != blank %}
+                {{
+                  block.settings.icon
+                  | image_url: width: 120
+                  | image_tag:
+                    class: 'pdp-comparison__solution-icon',
+                    loading: 'lazy',
+                    widths: '60,90,120',
+                    sizes: '48px',
+                    alt: block.settings.solution
+                }}
+              {% endif %}
+              <span>{{ block.settings.solution | escape }}</span>
+            </div>
+
+            <div class="pdp-comparison__card-grid">
+              <div>
+                <strong>{{ section.settings.col_how }}</strong>
+                <div>{{ block.settings.how_it_works }}</div>
+              </div>
+              <div>
+                <strong>{{ section.settings.col_consider }}</strong>
+                <div>{{ block.settings.what_to_consider }}</div>
+              </div>
+              <div>
+                <strong>{{ section.settings.col_cost }}</strong>
+                <div>{{ block.settings.cost_over_time }}</div>
+              </div>
+              <div>
+                <strong>{{ section.settings.col_side_effects }}</strong>
+                <div>{{ block.settings.side_effects }}</div>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+      <div class="pdp-comparison__dots" data-comparison-dots>
+        {% for block in section.blocks %}
+          <button class="pdp-comparison__dot{% if forloop.first %} is-active{% endif %}" type="button" data-comparison-dot></button>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const section = document.currentScript.previousElementSibling;
+    if (!section?.matches('.pdp-comparison')) return;
+
+    const cards = section.querySelector('[data-comparison-cards]');
+    const dots = [...section.querySelectorAll('[data-comparison-dot]')];
+    if (!cards || !dots.length) return;
+
+    const updateDots = () => {
+      const index = Math.round(cards.scrollLeft / Math.max(cards.clientWidth, 1));
+      dots.forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
+    };
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        cards.scrollTo({ left: cards.clientWidth * index, behavior: 'smooth' });
+      });
+    });
+
+    cards.addEventListener('scroll', () => window.requestAnimationFrame(updateDots), { passive: true });
+  })();
+</script>
+
+{% stylesheet %}
+  .pdp-comparison {
+    padding: 2rem var(--padding-lg);
+    background: #f7f3eb;
+  }
+
+  .pdp-comparison__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .pdp-comparison__heading {
+    margin: 0 0 1.5rem;
+    color: var(--pdp-hero-ink);
+    font-family: var(--font-recoleta);
+    font-size: clamp(2rem, 6vw, 3.75rem);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    text-align: center;
+  }
+
+  .pdp-comparison__desktop {
+    display: none;
+  }
+
+  .pdp-comparison__cards {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .pdp-comparison__cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pdp-comparison__card {
+    flex: 0 0 calc(100% - 2rem);
+    scroll-snap-align: start;
+    border-radius: 0.5rem;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgb(48 53 34 / 8%);
+  }
+
+  .pdp-comparison__card.is-highlighted {
+    box-shadow: 0 0 0 2px #556f39;
+  }
+
+  .pdp-comparison__card-solution {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #6e9b4f;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .pdp-comparison__card-grid {
+    display: grid;
+  }
+
+  .pdp-comparison__card-grid > div {
+    padding: 0.875rem 1rem;
+    border-top: 1px solid #ece8dd;
+    color: var(--pdp-hero-muted);
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  .pdp-comparison__card-grid strong {
+    display: block;
+    margin-bottom: 0.375rem;
+    color: var(--pdp-hero-ink);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .pdp-comparison__solution-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: contain;
+    flex: 0 0 auto;
+  }
+
+  .pdp-comparison__dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.375rem;
+    margin-top: 0.875rem;
+  }
+
+  .pdp-comparison__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgb(46 53 32 / 0.24);
+  }
+
+  .pdp-comparison__dot.is-active {
+    background: #2e3520;
+  }
+
+  @media screen and (min-width: 750px) {
+    .pdp-comparison {
+      padding: 3rem 0 4rem;
+    }
+
+    .pdp-comparison__desktop {
+      display: block;
+    }
+
+    .pdp-comparison__mobile {
+      display: none;
+    }
+
+    .pdp-comparison__table-wrap {
+      overflow-x: auto;
+      border-radius: 0.5rem;
+      background: #fff;
+      box-shadow: 0 12px 32px rgb(48 53 34 / 8%);
+    }
+
+    .pdp-comparison__table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .pdp-comparison__table th,
+    .pdp-comparison__table td {
+      padding: 1.25rem 1rem;
+      border: 1px solid #e5dfd1;
+      vertical-align: top;
+      color: var(--pdp-hero-muted);
+      font-size: 0.9375rem;
+      line-height: 1.45;
+      text-align: left;
+    }
+
+    .pdp-comparison__table thead th {
+      color: var(--pdp-hero-ink);
+      font-size: 0.875rem;
+      font-weight: 600;
+      background: #fff;
+    }
+
+    .pdp-comparison__table tr.is-highlighted > * {
+      background: linear-gradient(180deg, #76a154 0%, #5e8740 100%);
+      color: #fff;
+      border-color: rgb(255 255 255 / 0.18);
+    }
+
+    .pdp-comparison__table tr.is-highlighted .pdp-comparison__solution-cell span {
+      color: inherit;
+    }
+
+    .pdp-comparison__solution-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      color: var(--pdp-hero-ink);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "PDP comparison table",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why We Are Really Different"
+    },
+    {
+      "type": "text",
+      "id": "col_solution",
+      "label": "Column 1 heading",
+      "default": "Solution"
+    },
+    {
+      "type": "text",
+      "id": "col_how",
+      "label": "Column 2 heading",
+      "default": "How it works"
+    },
+    {
+      "type": "text",
+      "id": "col_consider",
+      "label": "Column 3 heading",
+      "default": "What to consider"
+    },
+    {
+      "type": "text",
+      "id": "col_cost",
+      "label": "Column 4 heading",
+      "default": "Cost over time"
+    },
+    {
+      "type": "text",
+      "id": "col_side_effects",
+      "label": "Column 5 heading",
+      "default": "Side effects"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "highlight",
+          "label": "Highlight row",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Solution icon"
+        },
+        {
+          "type": "text",
+          "id": "solution",
+          "label": "Solution"
+        },
+        {
+          "type": "textarea",
+          "id": "how_it_works",
+          "label": "How it works"
+        },
+        {
+          "type": "textarea",
+          "id": "what_to_consider",
+          "label": "What to consider"
+        },
+        {
+          "type": "textarea",
+          "id": "cost_over_time",
+          "label": "Cost over time"
+        },
+        {
+          "type": "textarea",
+          "id": "side_effects",
+          "label": "Side effects"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP comparison table"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,384 @@
+<div class="pdp-benefit-rotator section section--page-width color-{{ section.settings.color_scheme }}" data-rotate-seconds="{{ section.settings.rotate_seconds }}">
+  <div class="pdp-benefit-rotator__inner">
+    <div class="pdp-benefit-rotator__intro">
+      {% if section.settings.heading != blank %}
+        <h2 class="pdp-benefit-rotator__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.body != blank %}
+        <div class="pdp-benefit-rotator__body rte">{{ section.settings.body }}</div>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="pdp-benefit-rotator__layout">
+        <div class="pdp-benefit-rotator__nav" role="tablist" aria-label="{{ section.settings.heading | strip_html | escape }}">
+          {% for block in section.blocks %}
+            <button
+              class="pdp-benefit-rotator__pill{% if forloop.first %} is-active{% endif %}"
+              type="button"
+              data-rotator-trigger
+              data-target="benefit-{{ section.id }}-{{ block.id }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              {% if block.settings.icon != blank %}
+                {{
+                  block.settings.icon
+                  | image_url: width: 48
+                  | image_tag:
+                    class: 'pdp-benefit-rotator__pill-icon',
+                    loading: 'lazy',
+                    widths: '24,36,48',
+                    sizes: '18px',
+                    alt: block.settings.label
+                }}
+              {% endif %}
+              <span>{{ block.settings.label | escape }}</span>
+            </button>
+          {% endfor %}
+        </div>
+
+        <div class="pdp-benefit-rotator__panels">
+          {% for block in section.blocks %}
+            <article
+              id="benefit-{{ section.id }}-{{ block.id }}"
+              class="pdp-benefit-rotator__panel{% if forloop.first %} is-active{% endif %}"
+              data-rotator-panel
+            >
+              <div class="pdp-benefit-rotator__media">
+                {% if block.settings.image != blank %}
+                  {{
+                    block.settings.image
+                    | image_url: width: 900
+                    | image_tag:
+                      class: 'pdp-benefit-rotator__image',
+                      loading: 'lazy',
+                      widths: '360,540,720,900',
+                      sizes: '(min-width: 750px) 40vw, 100vw',
+                      alt: block.settings.title
+                  }}
+                {% endif %}
+              </div>
+
+              <div class="pdp-benefit-rotator__content">
+                {% if block.settings.title != blank %}
+                  <h3 class="pdp-benefit-rotator__title">{{ block.settings.title }}</h3>
+                {% endif %}
+
+                {% if block.settings.description != blank %}
+                  <div class="pdp-benefit-rotator__description rte">{{ block.settings.description }}</div>
+                {% endif %}
+
+                {% if block.settings.link_label != blank and block.settings.link_url != blank %}
+                  <a class="pdp-benefit-rotator__link" href="{{ block.settings.link_url }}">
+                    {{ block.settings.link_label | escape }}
+                  </a>
+                {% endif %}
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  (() => {
+    const section = document.currentScript.previousElementSibling;
+    if (!section?.matches('.pdp-benefit-rotator')) return;
+
+    const triggers = [...section.querySelectorAll('[data-rotator-trigger]')];
+    const panels = [...section.querySelectorAll('[data-rotator-panel]')];
+    if (!triggers.length || !panels.length) return;
+
+    let index = 0;
+    const delay = Math.max(1, Number(section.dataset.rotateSeconds || 10)) * 1000;
+    let timerId;
+
+    const activate = (nextIndex) => {
+      index = nextIndex;
+      const targetId = triggers[index].dataset.target;
+
+      triggers.forEach((trigger, triggerIndex) => {
+        const active = triggerIndex === index;
+        trigger.classList.toggle('is-active', active);
+        trigger.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+
+      panels.forEach((panel) => {
+        panel.classList.toggle('is-active', panel.id === targetId);
+      });
+    };
+
+    const start = () => {
+      window.clearInterval(timerId);
+      timerId = window.setInterval(() => {
+        activate((index + 1) % triggers.length);
+      }, delay);
+    };
+
+    triggers.forEach((trigger, triggerIndex) => {
+      trigger.addEventListener('click', () => {
+        activate(triggerIndex);
+        start();
+      });
+    });
+
+    section.addEventListener('mouseenter', () => window.clearInterval(timerId));
+    section.addEventListener('mouseleave', start);
+    start();
+  })();
+</script>
+
+{% stylesheet %}
+  .pdp-benefit-rotator {
+    padding: 2rem var(--padding-lg);
+    background: #f7f3eb;
+  }
+
+  .pdp-benefit-rotator__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .pdp-benefit-rotator__heading {
+    margin: 0 0 0.875rem;
+    color: var(--pdp-hero-ink);
+    font-family: var(--font-recoleta);
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  .pdp-benefit-rotator__body {
+    max-width: 42rem;
+    color: var(--pdp-hero-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .pdp-benefit-rotator__body > *:first-child {
+    margin-top: 0;
+  }
+
+  .pdp-benefit-rotator__layout {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .pdp-benefit-rotator__nav {
+    display: flex;
+    gap: 0.625rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .pdp-benefit-rotator__nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pdp-benefit-rotator__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.625rem 1rem;
+    border: 1px solid #8b8c7c;
+    border-radius: 999px;
+    background: transparent;
+    color: #535548;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .pdp-benefit-rotator__pill.is-active {
+    border-color: #2e3520;
+    background: #2e3520;
+    color: #f4f1e6;
+  }
+
+  .pdp-benefit-rotator__pill-icon {
+    width: 1rem;
+    height: 1rem;
+    object-fit: contain;
+  }
+
+  .pdp-benefit-rotator__panel {
+    display: none;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: #2e3520;
+    color: #f4f1e6;
+  }
+
+  .pdp-benefit-rotator__panel.is-active {
+    display: grid;
+  }
+
+  .pdp-benefit-rotator__media {
+    min-height: 16rem;
+  }
+
+  .pdp-benefit-rotator__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pdp-benefit-rotator__content {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  .pdp-benefit-rotator__title {
+    margin: 0;
+    font-family: var(--font-recoleta);
+    font-size: clamp(1.875rem, 5vw, 3.125rem);
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+  }
+
+  .pdp-benefit-rotator__description {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .pdp-benefit-rotator__description > *:first-child {
+    margin-top: 0;
+  }
+
+  .pdp-benefit-rotator__description > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .pdp-benefit-rotator__link {
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  @media screen and (min-width: 750px) {
+    .pdp-benefit-rotator {
+      padding: 3rem 0;
+    }
+
+    .pdp-benefit-rotator__layout {
+      grid-template-columns: minmax(16rem, 18rem) minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .pdp-benefit-rotator__nav {
+      display: grid;
+      align-content: start;
+      gap: 0.75rem;
+      overflow: visible;
+    }
+
+    .pdp-benefit-rotator__panel.is-active {
+      grid-template-columns: minmax(16rem, 0.65fr) minmax(20rem, 1fr);
+      min-height: 30rem;
+    }
+
+    .pdp-benefit-rotator__media {
+      min-height: 100%;
+    }
+
+    .pdp-benefit-rotator__content {
+      padding: 3rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "PDP benefit rotator",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>One Natural Solution. Whole-Body Benefits.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body"
+    },
+    {
+      "type": "range",
+      "id": "rotate_seconds",
+      "label": "Auto rotate every",
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "unit": "s",
+      "default": 10
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Pill icon"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Pill label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "PDP benefit rotator"
+    }
+  ]
+}
+{% endschema %}
