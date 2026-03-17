@@ -257,24 +257,28 @@
         "item_1": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/ShieldCheck.svg",
             "text": "90-Day Results-Backed Guarantee"
           }
         },
         "item_2": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/united-states-america_702250_1.svg",
             "text": "Designed in USA"
           }
         },
         "item_3": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Package.svg",
             "text": "Ships in 2–6 Days"
           }
         },
         "item_4": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Tree.svg",
             "text": "A Tree Planted per Order"
           }
         }
