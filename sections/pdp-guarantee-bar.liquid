@@ -1,0 +1,104 @@
+<div class="pdp-guarantee-bar color-{{ section.settings.color_scheme }}">
+  <div class="pdp-guarantee-bar__inner">
+    {% for block in section.blocks %}
+      <div class="pdp-guarantee-bar__item" {{ block.shopify_attributes }}>
+        {% if block.settings.icon != blank %}
+          {{
+            block.settings.icon
+            | image_url: width: 64
+            | image_tag:
+              class: 'pdp-guarantee-bar__icon',
+              loading: 'lazy',
+              widths: '32,48,64',
+              sizes: '24px',
+              alt: block.settings.text
+          }}
+        {% endif %}
+
+        {% if block.settings.text != blank %}
+          <span class="pdp-guarantee-bar__text">{{ block.settings.text | escape }}</span>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .pdp-guarantee-bar {
+    background: #2e3520;
+    color: #f2efe5;
+  }
+
+  .pdp-guarantee-bar__inner {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1rem var(--padding-lg);
+  }
+
+  .pdp-guarantee-bar__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2rem;
+  }
+
+  .pdp-guarantee-bar__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+    flex: 0 0 auto;
+  }
+
+  .pdp-guarantee-bar__text {
+    font-size: 0.9375rem;
+    line-height: 1.35;
+  }
+
+  @media screen and (min-width: 750px) {
+    .pdp-guarantee-bar__inner {
+      grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+      align-items: center;
+      gap: 1rem 1.5rem;
+      max-width: 120rem;
+      margin: 0 auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "PDP guarantee bar",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "PDP guarantee bar"
+    }
+  ]
+}
+{% endschema %}

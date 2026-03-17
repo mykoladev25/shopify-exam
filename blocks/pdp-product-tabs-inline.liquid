@@ -1,0 +1,331 @@
+<div class="pdp-inline-tabs" {{ block.shopify_attributes }}>
+  <div class="pdp-inline-tabs__desktop-nav" role="tablist" aria-label="{{ block.settings.navigation_label | escape }}">
+    {% for i in (1..4) %}
+      {% liquid
+        assign heading_key = 'heading_' | append: i
+        assign desc_key = 'use_product_description_' | append: i
+        assign content_key = 'content_' | append: i
+        assign heading = block.settings[heading_key]
+        assign use_product_description = block.settings[desc_key]
+        assign content = block.settings[content_key]
+        if use_product_description
+          assign content = product.description
+        endif
+      %}
+      {% if heading != blank and content != blank %}
+        <button
+          class="pdp-inline-tabs__tab{% if forloop.first %} is-active{% endif %}"
+          type="button"
+          role="tab"
+          data-tab-button
+          data-tab-target="inline-tab-{{ block.id }}-{{ i }}"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+        >
+          {{ heading | escape }}
+        </button>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="pdp-inline-tabs__desktop-panels">
+    {% for i in (1..4) %}
+      {% liquid
+        assign heading_key = 'heading_' | append: i
+        assign desc_key = 'use_product_description_' | append: i
+        assign content_key = 'content_' | append: i
+        assign heading = block.settings[heading_key]
+        assign use_product_description = block.settings[desc_key]
+        assign content = block.settings[content_key]
+        if use_product_description
+          assign content = product.description
+        endif
+      %}
+      {% if heading != blank and content != blank %}
+        <div
+          id="inline-tab-{{ block.id }}-{{ i }}"
+          class="pdp-inline-tabs__panel{% if forloop.first %} is-active{% endif %}"
+          role="tabpanel"
+          data-tab-panel
+        >
+          <div class="pdp-inline-tabs__content rte">
+            {{ content }}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="pdp-inline-tabs__mobile">
+    {% for i in (1..4) %}
+      {% liquid
+        assign heading_key = 'heading_' | append: i
+        assign desc_key = 'use_product_description_' | append: i
+        assign content_key = 'content_' | append: i
+        assign heading = block.settings[heading_key]
+        assign use_product_description = block.settings[desc_key]
+        assign content = block.settings[content_key]
+        if use_product_description
+          assign content = product.description
+        endif
+      %}
+      {% if heading != blank and content != blank %}
+        <details class="pdp-inline-tabs__accordion" {% if forloop.first %}open{% endif %}>
+          <summary class="pdp-inline-tabs__accordion-summary">
+            {{ heading | escape }}
+            <span class="pdp-inline-tabs__accordion-icon">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+          </summary>
+          <div class="pdp-inline-tabs__accordion-content rte">
+            {{ content }}
+          </div>
+        </details>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  (() => {
+    const script = document.currentScript;
+    const scope = script?.previousElementSibling;
+    if (!scope?.matches('.pdp-inline-tabs')) return;
+
+    const buttons = scope.querySelectorAll('[data-tab-button]');
+    const panels = scope.querySelectorAll('[data-tab-panel]');
+    if (!buttons.length || !panels.length) return;
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = button.getAttribute('data-tab-target');
+
+        buttons.forEach((item) => {
+          const active = item === button;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+
+        panels.forEach((panel) => {
+          panel.classList.toggle('is-active', panel.id === target);
+        });
+      });
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .pdp-inline-tabs {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--pdp-hero-line);
+  }
+
+  .pdp-inline-tabs__desktop-nav {
+    display: none;
+  }
+
+  .pdp-inline-tabs__desktop-panels {
+    display: none;
+  }
+
+  .pdp-inline-tabs__accordion {
+    border-bottom: 1px solid var(--pdp-hero-line);
+  }
+
+  .pdp-inline-tabs__accordion-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0;
+    list-style: none;
+    color: var(--pdp-hero-ink);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .pdp-inline-tabs__accordion-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pdp-inline-tabs__accordion-icon {
+    flex: 0 0 auto;
+    transition: transform 0.2s ease;
+  }
+
+  .pdp-inline-tabs__accordion[open] .pdp-inline-tabs__accordion-icon {
+    transform: rotate(45deg);
+  }
+
+  .pdp-inline-tabs__accordion-content,
+  .pdp-inline-tabs__content {
+    padding-bottom: 1rem;
+    color: var(--pdp-hero-muted);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+
+  .pdp-inline-tabs__accordion-content > *:first-child,
+  .pdp-inline-tabs__content > *:first-child {
+    margin-top: 0;
+  }
+
+  .pdp-inline-tabs__accordion-content > *:last-child,
+  .pdp-inline-tabs__content > *:last-child {
+    margin-bottom: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .pdp-inline-tabs__desktop-nav {
+      display: flex;
+      gap: 1.5rem;
+      border-bottom: 1px solid var(--pdp-hero-line);
+    }
+
+    .pdp-inline-tabs__tab {
+      position: relative;
+      padding: 1rem 0 0.875rem;
+      border: 0;
+      background: transparent;
+      color: #91917f;
+      font-size: 0.9375rem;
+      cursor: pointer;
+    }
+
+    .pdp-inline-tabs__tab::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--pdp-hero-ink);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.2s ease;
+    }
+
+    .pdp-inline-tabs__tab.is-active {
+      color: var(--pdp-hero-ink);
+    }
+
+    .pdp-inline-tabs__tab.is-active::after {
+      transform: scaleX(1);
+    }
+
+    .pdp-inline-tabs__desktop-panels {
+      display: block;
+      padding-top: 1.25rem;
+    }
+
+    .pdp-inline-tabs__panel {
+      display: none;
+    }
+
+    .pdp-inline-tabs__panel.is-active {
+      display: block;
+    }
+
+    .pdp-inline-tabs__mobile {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "PDP product tabs inline",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "navigation_label",
+      "label": "Navigation label",
+      "default": "Product information"
+    },
+    {
+      "type": "header",
+      "content": "Tab 1"
+    },
+    {
+      "type": "text",
+      "id": "heading_1",
+      "label": "Heading 1",
+      "default": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_product_description_1",
+      "label": "Use product description 1",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "content_1",
+      "label": "Content 1"
+    },
+    {
+      "type": "header",
+      "content": "Tab 2"
+    },
+    {
+      "type": "text",
+      "id": "heading_2",
+      "label": "Heading 2",
+      "default": "Who is it for?"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_product_description_2",
+      "label": "Use product description 2",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "content_2",
+      "label": "Content 2"
+    },
+    {
+      "type": "header",
+      "content": "Tab 3"
+    },
+    {
+      "type": "text",
+      "id": "heading_3",
+      "label": "Heading 3",
+      "default": "Shipping and returns"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_product_description_3",
+      "label": "Use product description 3",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "content_3",
+      "label": "Content 3"
+    },
+    {
+      "type": "header",
+      "content": "Tab 4"
+    },
+    {
+      "type": "text",
+      "id": "heading_4",
+      "label": "Heading 4",
+      "default": "Care Instructions"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_product_description_4",
+      "label": "Use product description 4",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "content_4",
+      "label": "Content 4"
+    }
+  ]
+}
+{% endschema %}
