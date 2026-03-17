@@ -1,0 +1,94 @@
+{% comment %}
+  Self-hosted display font for the PDP assessment.
+  Scope usage in section/block styles instead of overwriting the whole theme typography.
+{% endcomment %}
+
+<link
+  rel="preload"
+  as="font"
+  href="{{ 'Recoleta/Recoleta Regular.woff2' | asset_url }}"
+  type="font/woff2"
+  crossorigin
+>
+<link
+  rel="preload"
+  as="font"
+  href="{{ 'Recoleta/Recoleta Medium.woff2' | asset_url }}"
+  type="font/woff2"
+  crossorigin
+>
+<link
+  rel="preload"
+  as="font"
+  href="{{ 'Recoleta/Recoleta SemiBold.woff2' | asset_url }}"
+  type="font/woff2"
+  crossorigin
+>
+
+{% style %}
+  @font-face {
+    font-family: 'Recoleta';
+    src: url('{{ 'Recoleta/Recoleta Regular.woff2' | asset_url }}') format('woff2');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Recoleta';
+    src: url('{{ 'Recoleta/Recoleta Medium.woff2' | asset_url }}') format('woff2');
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Recoleta';
+    src: url('{{ 'Recoleta/Recoleta SemiBold.woff2' | asset_url }}') format('woff2');
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+  }
+
+  :root {
+    --font-recoleta: 'Recoleta', Georgia, serif;
+    --pdp-hero-accent: #b7d61f;
+    --pdp-hero-ink: #36382a;
+    --pdp-hero-muted: #5e624f;
+    --pdp-hero-line: #d7d4ca;
+    --pdp-hero-stock-bg: #f8e5e4;
+    --pdp-hero-stock-text: #ad635d;
+    --pdp-hero-viewing-bg: #edf2e3;
+    --pdp-hero-viewing-text: #667858;
+  }
+
+  :root {
+    --font-heading--family: var(--font-recoleta);
+    --font-heading--style: normal;
+    --font-heading--weight: 400;
+
+    --font-h1--family: var(--font-recoleta);
+    --font-h1--style: normal;
+    --font-h1--weight: 400;
+
+    --font-h2--family: var(--font-recoleta);
+    --font-h2--style: normal;
+    --font-h2--weight: 400;
+
+    --font-h3--family: var(--font-recoleta);
+    --font-h3--style: normal;
+    --font-h3--weight: 400;
+
+    --font-h4--family: var(--font-recoleta);
+    --font-h4--style: normal;
+    --font-h4--weight: 400;
+
+    --font-h5--family: var(--font-recoleta);
+    --font-h5--style: normal;
+    --font-h5--weight: 400;
+
+    --font-h6--family: var(--font-recoleta);
+    --font-h6--style: normal;
+    --font-h6--weight: 400;
+  }
+{% endstyle %}
