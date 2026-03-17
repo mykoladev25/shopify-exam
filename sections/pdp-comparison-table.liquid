@@ -1,4 +1,6 @@
-<div class="pdp-comparison section section--page-width color-{{ section.settings.color_scheme }}">
+<script src="{{ 'pdp-sections.js' | asset_url }}" type="module"></script>
+
+<div class="pdp-comparison section section--page-width color-{{ section.settings.color_scheme }}" data-pdp-comparison>
   <div class="pdp-comparison__inner">
     {% if section.settings.heading != blank %}
       <h2 class="pdp-comparison__heading">{{ section.settings.heading }}</h2>
@@ -25,11 +27,13 @@
                       block.settings.icon
                       | image_url: width: 120
                       | image_tag:
-                        class: 'pdp-comparison__solution-icon',
-                        loading: 'lazy',
-                        widths: '60,90,120',
-                        sizes: '48px',
-                        alt: block.settings.solution
+                      class: 'pdp-comparison__solution-icon',
+                      loading: 'lazy',
+                      decoding: 'async',
+                      fetchpriority: 'low',
+                      widths: '60,90,120',
+                      sizes: '48px',
+                      alt: block.settings.solution
                     }}
                   {% endif %}
                   <span>{{ block.settings.solution | escape }}</span>
@@ -57,6 +61,8 @@
                   | image_tag:
                     class: 'pdp-comparison__solution-icon',
                     loading: 'lazy',
+                    decoding: 'async',
+                    fetchpriority: 'low',
                     widths: '60,90,120',
                     sizes: '48px',
                     alt: block.settings.solution
@@ -95,34 +101,12 @@
   </div>
 </div>
 
-<script>
-  (() => {
-    const section = document.currentScript.previousElementSibling;
-    if (!section?.matches('.pdp-comparison')) return;
-
-    const cards = section.querySelector('[data-comparison-cards]');
-    const dots = [...section.querySelectorAll('[data-comparison-dot]')];
-    if (!cards || !dots.length) return;
-
-    const updateDots = () => {
-      const index = Math.round(cards.scrollLeft / Math.max(cards.clientWidth, 1));
-      dots.forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
-    };
-
-    dots.forEach((dot, index) => {
-      dot.addEventListener('click', () => {
-        cards.scrollTo({ left: cards.clientWidth * index, behavior: 'smooth' });
-      });
-    });
-
-    cards.addEventListener('scroll', () => window.requestAnimationFrame(updateDots), { passive: true });
-  })();
-</script>
-
 {% stylesheet %}
   .pdp-comparison {
     padding: 2rem var(--padding-lg);
     background: #f7f3eb;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 900px;
   }
 
   .pdp-comparison__inner {
@@ -151,6 +135,7 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    contain: content;
   }
 
   .pdp-comparison__cards::-webkit-scrollbar {

@@ -36,6 +36,8 @@
                 | image_tag:
                   class: 'pdp-inline-social-proof__avatar',
                   loading: 'lazy',
+                  decoding: 'async',
+                  fetchpriority: 'low',
                   widths: '80,120,160',
                   sizes: '72px',
                   alt: name
@@ -122,6 +124,7 @@
     gap: 0.75rem;
     overflow-x: auto;
     scrollbar-width: none;
+    contain: content;
   }
 
   .pdp-inline-social-proof__list::-webkit-scrollbar {

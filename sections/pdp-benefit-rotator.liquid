@@ -1,4 +1,6 @@
-<div class="pdp-benefit-rotator section section--page-width color-{{ section.settings.color_scheme }}" data-rotate-seconds="{{ section.settings.rotate_seconds }}">
+<script src="{{ 'pdp-sections.js' | asset_url }}" type="module"></script>
+
+<div class="pdp-benefit-rotator section section--page-width color-{{ section.settings.color_scheme }}" data-pdp-benefit-rotator data-rotate-seconds="{{ section.settings.rotate_seconds }}">
   <div class="pdp-benefit-rotator__inner">
     <div class="pdp-benefit-rotator__intro">
       {% if section.settings.heading != blank %}
@@ -27,11 +29,13 @@
                   block.settings.icon
                   | image_url: width: 48
                   | image_tag:
-                    class: 'pdp-benefit-rotator__pill-icon',
-                    loading: 'lazy',
-                    widths: '24,36,48',
-                    sizes: '18px',
-                    alt: block.settings.label
+                      class: 'pdp-benefit-rotator__pill-icon',
+                      loading: 'lazy',
+                      decoding: 'async',
+                      fetchpriority: 'low',
+                      widths: '24,36,48',
+                      sizes: '18px',
+                      alt: block.settings.label
                 }}
               {% endif %}
               <span>{{ block.settings.label | escape }}</span>
@@ -54,6 +58,8 @@
                     | image_tag:
                       class: 'pdp-benefit-rotator__image',
                       loading: 'lazy',
+                      decoding: 'async',
+                      fetchpriority: 'low',
                       widths: '360,540,720,900',
                       sizes: '(min-width: 750px) 40vw, 100vw',
                       alt: block.settings.title
@@ -84,58 +90,12 @@
   </div>
 </div>
 
-<script>
-  (() => {
-    const section = document.currentScript.previousElementSibling;
-    if (!section?.matches('.pdp-benefit-rotator')) return;
-
-    const triggers = [...section.querySelectorAll('[data-rotator-trigger]')];
-    const panels = [...section.querySelectorAll('[data-rotator-panel]')];
-    if (!triggers.length || !panels.length) return;
-
-    let index = 0;
-    const delay = Math.max(1, Number(section.dataset.rotateSeconds || 10)) * 1000;
-    let timerId;
-
-    const activate = (nextIndex) => {
-      index = nextIndex;
-      const targetId = triggers[index].dataset.target;
-
-      triggers.forEach((trigger, triggerIndex) => {
-        const active = triggerIndex === index;
-        trigger.classList.toggle('is-active', active);
-        trigger.setAttribute('aria-selected', active ? 'true' : 'false');
-      });
-
-      panels.forEach((panel) => {
-        panel.classList.toggle('is-active', panel.id === targetId);
-      });
-    };
-
-    const start = () => {
-      window.clearInterval(timerId);
-      timerId = window.setInterval(() => {
-        activate((index + 1) % triggers.length);
-      }, delay);
-    };
-
-    triggers.forEach((trigger, triggerIndex) => {
-      trigger.addEventListener('click', () => {
-        activate(triggerIndex);
-        start();
-      });
-    });
-
-    section.addEventListener('mouseenter', () => window.clearInterval(timerId));
-    section.addEventListener('mouseleave', start);
-    start();
-  })();
-</script>
-
 {% stylesheet %}
   .pdp-benefit-rotator {
     padding: 2rem var(--padding-lg);
     background: #f7f3eb;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 900px;
   }
 
   .pdp-benefit-rotator__inner {
@@ -168,6 +128,7 @@
     display: grid;
     gap: 1.25rem;
     margin-top: 1.5rem;
+    contain: layout style;
   }
 
   .pdp-benefit-rotator__nav {

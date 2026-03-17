@@ -9,6 +9,8 @@
             | image_tag:
               class: 'pdp-guarantee-bar__icon',
               loading: 'lazy',
+              decoding: 'async',
+              fetchpriority: 'low',
               widths: '32,48,64',
               sizes: '24px',
               alt: block.settings.text
@@ -27,6 +29,8 @@
   .pdp-guarantee-bar {
     background: #2e3520;
     color: #f2efe5;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 96px;
   }
 
   .pdp-guarantee-bar__inner {
@@ -34,6 +38,7 @@
     justify-content: center;
     gap: 0.75rem;
     padding: 1rem var(--padding-lg);
+    flex-wrap: wrap;
   }
 
   .pdp-guarantee-bar__item {

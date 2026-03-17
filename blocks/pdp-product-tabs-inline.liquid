@@ -1,4 +1,6 @@
-<div class="pdp-inline-tabs" {{ block.shopify_attributes }}>
+<script src="{{ 'pdp-sections.js' | asset_url }}" type="module"></script>
+
+<div class="pdp-inline-tabs" data-pdp-inline-tabs {{ block.shopify_attributes }}>
   <div class="pdp-inline-tabs__desktop-nav" role="tablist" aria-label="{{ block.settings.navigation_label | escape }}">
     {% for i in (1..4) %}
       {% liquid
@@ -83,38 +85,11 @@
   </div>
 </div>
 
-<script>
-  (() => {
-    const script = document.currentScript;
-    const scope = script?.previousElementSibling;
-    if (!scope?.matches('.pdp-inline-tabs')) return;
-
-    const buttons = scope.querySelectorAll('[data-tab-button]');
-    const panels = scope.querySelectorAll('[data-tab-panel]');
-    if (!buttons.length || !panels.length) return;
-
-    buttons.forEach((button) => {
-      button.addEventListener('click', () => {
-        const target = button.getAttribute('data-tab-target');
-
-        buttons.forEach((item) => {
-          const active = item === button;
-          item.classList.toggle('is-active', active);
-          item.setAttribute('aria-selected', active ? 'true' : 'false');
-        });
-
-        panels.forEach((panel) => {
-          panel.classList.toggle('is-active', panel.id === target);
-        });
-      });
-    });
-  })();
-</script>
-
 {% stylesheet %}
   .pdp-inline-tabs {
     padding-top: 1.25rem;
     border-top: 1px solid var(--pdp-hero-line);
+    contain: layout style;
   }
 
   .pdp-inline-tabs__desktop-nav {
@@ -216,6 +191,8 @@
     .pdp-inline-tabs__desktop-panels {
       display: block;
       padding-top: 1.25rem;
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 360px;
     }
 
     .pdp-inline-tabs__panel {
