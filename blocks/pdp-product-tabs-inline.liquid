@@ -1,87 +1,141 @@
 <script src="{{ 'pdp-sections.js' | asset_url }}" type="module"></script>
 
+{% liquid
+  assign product = closest.product
+  assign tab_1_heading = product.metafields.custom.pdp_tab_description_heading.value | default: block.settings.heading_1
+  assign tab_2_heading = product.metafields.custom.pdp_tab_who_is_it_for_heading.value | default: block.settings.heading_2
+  assign tab_3_heading = product.metafields.custom.pdp_tab_shipping_returns_heading.value | default: block.settings.heading_3
+  assign tab_4_heading = product.metafields.custom.pdp_tab_care_instructions_heading.value | default: block.settings.heading_4
+
+  capture tab_1_content
+    if product.metafields.custom.pdp_tab_description != blank
+      echo product.metafields.custom.pdp_tab_description | metafield_tag
+    elsif block.settings.use_product_description_1
+      echo product.description
+    else
+      echo block.settings.content_1
+    endif
+  endcapture
+  assign tab_1_content = tab_1_content | strip
+
+  capture tab_2_content
+    if product.metafields.custom.pdp_tab_who_is_it_for != blank
+      echo product.metafields.custom.pdp_tab_who_is_it_for | metafield_tag
+    elsif block.settings.use_product_description_2
+      echo product.description
+    else
+      echo block.settings.content_2
+    endif
+  endcapture
+  assign tab_2_content = tab_2_content | strip
+
+  capture tab_3_content
+    if product.metafields.custom.pdp_tab_shipping_returns != blank
+      echo product.metafields.custom.pdp_tab_shipping_returns | metafield_tag
+    elsif block.settings.use_product_description_3
+      echo product.description
+    else
+      echo block.settings.content_3
+    endif
+  endcapture
+  assign tab_3_content = tab_3_content | strip
+
+  capture tab_4_content
+    if product.metafields.custom.pdp_tab_care_instructions != blank
+      echo product.metafields.custom.pdp_tab_care_instructions | metafield_tag
+    elsif block.settings.use_product_description_4
+      echo product.description
+    else
+      echo block.settings.content_4
+    endif
+  endcapture
+  assign tab_4_content = tab_4_content | strip
+%}
+
 <div class="pdp-inline-tabs" data-pdp-inline-tabs {{ block.shopify_attributes }}>
   <div class="pdp-inline-tabs__desktop-nav" role="tablist" aria-label="{{ block.settings.navigation_label | escape }}">
-    {% for i in (1..4) %}
-      {% liquid
-        assign heading_key = 'heading_' | append: i
-        assign desc_key = 'use_product_description_' | append: i
-        assign content_key = 'content_' | append: i
-        assign heading = block.settings[heading_key]
-        assign use_product_description = block.settings[desc_key]
-        assign content = block.settings[content_key]
-        if use_product_description
-          assign content = product.description
-        endif
-      %}
-      {% if heading != blank and content != blank %}
-        <button
-          class="pdp-inline-tabs__tab{% if forloop.first %} is-active{% endif %}"
-          type="button"
-          role="tab"
-          data-tab-button
-          data-tab-target="inline-tab-{{ block.id }}-{{ i }}"
-          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-        >
-          {{ heading | escape }}
-        </button>
-      {% endif %}
-    {% endfor %}
+    {% if tab_1_heading != blank and tab_1_content != blank %}
+      <button class="pdp-inline-tabs__tab is-active" type="button" role="tab" data-tab-button data-tab-target="inline-tab-{{ block.id }}-1" aria-selected="true">
+        {{ tab_1_heading | escape }}
+      </button>
+    {% endif %}
+    {% if tab_2_heading != blank and tab_2_content != blank %}
+      <button class="pdp-inline-tabs__tab{% if tab_1_content == blank %} is-active{% endif %}" type="button" role="tab" data-tab-button data-tab-target="inline-tab-{{ block.id }}-2" aria-selected="{% if tab_1_content == blank %}true{% else %}false{% endif %}">
+        {{ tab_2_heading | escape }}
+      </button>
+    {% endif %}
+    {% if tab_3_heading != blank and tab_3_content != blank %}
+      <button class="pdp-inline-tabs__tab{% if tab_1_content == blank and tab_2_content == blank %} is-active{% endif %}" type="button" role="tab" data-tab-button data-tab-target="inline-tab-{{ block.id }}-3" aria-selected="{% if tab_1_content == blank and tab_2_content == blank %}true{% else %}false{% endif %}">
+        {{ tab_3_heading | escape }}
+      </button>
+    {% endif %}
+    {% if tab_4_heading != blank and tab_4_content != blank %}
+      <button class="pdp-inline-tabs__tab{% if tab_1_content == blank and tab_2_content == blank and tab_3_content == blank %} is-active{% endif %}" type="button" role="tab" data-tab-button data-tab-target="inline-tab-{{ block.id }}-4" aria-selected="{% if tab_1_content == blank and tab_2_content == blank and tab_3_content == blank %}true{% else %}false{% endif %}">
+        {{ tab_4_heading | escape }}
+      </button>
+    {% endif %}
   </div>
 
   <div class="pdp-inline-tabs__desktop-panels">
-    {% for i in (1..4) %}
-      {% liquid
-        assign heading_key = 'heading_' | append: i
-        assign desc_key = 'use_product_description_' | append: i
-        assign content_key = 'content_' | append: i
-        assign heading = block.settings[heading_key]
-        assign use_product_description = block.settings[desc_key]
-        assign content = block.settings[content_key]
-        if use_product_description
-          assign content = product.description
-        endif
-      %}
-      {% if heading != blank and content != blank %}
-        <div
-          id="inline-tab-{{ block.id }}-{{ i }}"
-          class="pdp-inline-tabs__panel{% if forloop.first %} is-active{% endif %}"
-          role="tabpanel"
-          data-tab-panel
-        >
-          <div class="pdp-inline-tabs__content rte">
-            {{ content }}
-          </div>
-        </div>
-      {% endif %}
-    {% endfor %}
+    {% if tab_1_heading != blank and tab_1_content != blank %}
+      <div id="inline-tab-{{ block.id }}-1" class="pdp-inline-tabs__panel is-active" role="tabpanel" data-tab-panel>
+        <div class="pdp-inline-tabs__content rte">{{ tab_1_content }}</div>
+      </div>
+    {% endif %}
+    {% if tab_2_heading != blank and tab_2_content != blank %}
+      <div id="inline-tab-{{ block.id }}-2" class="pdp-inline-tabs__panel{% if tab_1_content == blank %} is-active{% endif %}" role="tabpanel" data-tab-panel>
+        <div class="pdp-inline-tabs__content rte">{{ tab_2_content }}</div>
+      </div>
+    {% endif %}
+    {% if tab_3_heading != blank and tab_3_content != blank %}
+      <div id="inline-tab-{{ block.id }}-3" class="pdp-inline-tabs__panel{% if tab_1_content == blank and tab_2_content == blank %} is-active{% endif %}" role="tabpanel" data-tab-panel>
+        <div class="pdp-inline-tabs__content rte">{{ tab_3_content }}</div>
+      </div>
+    {% endif %}
+    {% if tab_4_heading != blank and tab_4_content != blank %}
+      <div id="inline-tab-{{ block.id }}-4" class="pdp-inline-tabs__panel{% if tab_1_content == blank and tab_2_content == blank and tab_3_content == blank %} is-active{% endif %}" role="tabpanel" data-tab-panel>
+        <div class="pdp-inline-tabs__content rte">{{ tab_4_content }}</div>
+      </div>
+    {% endif %}
   </div>
 
   <div class="pdp-inline-tabs__mobile">
-    {% for i in (1..4) %}
-      {% liquid
-        assign heading_key = 'heading_' | append: i
-        assign desc_key = 'use_product_description_' | append: i
-        assign content_key = 'content_' | append: i
-        assign heading = block.settings[heading_key]
-        assign use_product_description = block.settings[desc_key]
-        assign content = block.settings[content_key]
-        if use_product_description
-          assign content = product.description
-        endif
-      %}
-      {% if heading != blank and content != blank %}
-        <details class="pdp-inline-tabs__accordion" {% if forloop.first %}open{% endif %}>
-          <summary class="pdp-inline-tabs__accordion-summary">
-            {{ heading | escape }}
-            <span class="pdp-inline-tabs__accordion-icon">{{ 'icon-plus.svg' | inline_asset_content }}</span>
-          </summary>
-          <div class="pdp-inline-tabs__accordion-content rte">
-            {{ content }}
-          </div>
-        </details>
-      {% endif %}
-    {% endfor %}
+    {% if tab_1_heading != blank and tab_1_content != blank %}
+      <details class="pdp-inline-tabs__accordion" open>
+        <summary class="pdp-inline-tabs__accordion-summary">
+          {{ tab_1_heading | escape }}
+          <span class="pdp-inline-tabs__accordion-icon">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+        </summary>
+        <div class="pdp-inline-tabs__accordion-content rte">{{ tab_1_content }}</div>
+      </details>
+    {% endif %}
+    {% if tab_2_heading != blank and tab_2_content != blank %}
+      <details class="pdp-inline-tabs__accordion" {% if tab_1_content == blank %}open{% endif %}>
+        <summary class="pdp-inline-tabs__accordion-summary">
+          {{ tab_2_heading | escape }}
+          <span class="pdp-inline-tabs__accordion-icon">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+        </summary>
+        <div class="pdp-inline-tabs__accordion-content rte">{{ tab_2_content }}</div>
+      </details>
+    {% endif %}
+    {% if tab_3_heading != blank and tab_3_content != blank %}
+      <details class="pdp-inline-tabs__accordion" {% if tab_1_content == blank and tab_2_content == blank %}open{% endif %}>
+        <summary class="pdp-inline-tabs__accordion-summary">
+          {{ tab_3_heading | escape }}
+          <span class="pdp-inline-tabs__accordion-icon">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+        </summary>
+        <div class="pdp-inline-tabs__accordion-content rte">{{ tab_3_content }}</div>
+      </details>
+    {% endif %}
+    {% if tab_4_heading != blank and tab_4_content != blank %}
+      <details class="pdp-inline-tabs__accordion" {% if tab_1_content == blank and tab_2_content == blank and tab_3_content == blank %}open{% endif %}>
+        <summary class="pdp-inline-tabs__accordion-summary">
+          {{ tab_4_heading | escape }}
+          <span class="pdp-inline-tabs__accordion-icon">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+        </summary>
+        <div class="pdp-inline-tabs__accordion-content rte">{{ tab_4_content }}</div>
+      </details>
+    {% endif %}
   </div>
 </div>
 

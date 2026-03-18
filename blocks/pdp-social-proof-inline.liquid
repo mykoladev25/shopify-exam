@@ -1,33 +1,34 @@
 <script src="{{ 'dialog.js' | asset_url }}" type="module"></script>
 
+{% liquid
+  assign product = closest.product
+  assign social_heading = product.metafields.custom.pdp_social_proof_heading.value | default: block.settings.heading
+  assign social_items = product.metafields.custom.pdp_social_proof_items.value
+%}
+
 <div class="pdp-inline-social-proof" {{ block.shopify_attributes }}>
-  {% if block.settings.heading != blank %}
+  {% if social_heading != blank %}
     <h2 class="pdp-inline-social-proof__heading">
-      {{ block.settings.heading | escape }}
+      {{ social_heading | escape }}
     </h2>
   {% endif %}
 
   <div class="pdp-inline-social-proof__list" role="list">
-    {% for i in (1..5) %}
-      {% liquid
-        assign avatar_key = 'avatar_' | append: i
-        assign name_key = 'name_' | append: i
-        assign modal_title_key = 'modal_title_' | append: i
-        assign video_url_key = 'video_url_' | append: i
-        assign caption_key = 'caption_' | append: i
-        assign avatar = block.settings[avatar_key]
-        assign name = block.settings[name_key]
-        assign modal_title = block.settings[modal_title_key]
-        assign video = block.settings[video_url_key]
-        assign caption = block.settings[caption_key]
-      %}
-      {% if avatar != blank or name != blank or video != blank %}
+    {% if social_items != blank %}
+      {% for person in social_items %}
+        {% liquid
+          assign avatar = person.avatar.value | default: person.avatar
+          assign name = person.name.value | default: person.name
+          assign modal_title = person.modal_title.value | default: person.modal_title | default: name
+          assign video = person.video_url.value | default: person.video_url
+          assign caption = person.caption
+        %}
         <dialog-component class="pdp-inline-social-proof__card">
           <button
             class="pdp-inline-social-proof__button button button-unstyled"
             type="button"
             on:click="/showDialog"
-            aria-label="{{ name | default: block.settings.heading | escape }}"
+            aria-label="{{ name | default: social_heading | escape }}"
           >
             {% if avatar != blank %}
               {{
@@ -51,11 +52,11 @@
             ref="dialog"
             class="pdp-inline-social-proof__dialog dialog-modal"
             scroll-lock
-            aria-labelledby="pdp-inline-social-proof-title-{{ block.id }}-{{ i }}"
+            aria-labelledby="pdp-inline-social-proof-title-{{ block.id }}-{{ forloop.index }}"
           >
             <div class="pdp-inline-social-proof__dialog-inner">
-              <h3 id="pdp-inline-social-proof-title-{{ block.id }}-{{ i }}" class="pdp-inline-social-proof__dialog-title">
-                {{ modal_title | default: name | default: block.settings.heading | escape }}
+              <h3 id="pdp-inline-social-proof-title-{{ block.id }}-{{ forloop.index }}" class="pdp-inline-social-proof__dialog-title">
+                {{ modal_title | default: name | default: social_heading | escape }}
               </h3>
 
               <div class="pdp-inline-social-proof__video-frame">
@@ -84,7 +85,7 @@
 
               {% if caption != blank %}
                 <div class="pdp-inline-social-proof__caption">
-                  {{ caption }}
+                  {{ caption | metafield_tag }}
                 </div>
               {% endif %}
 
@@ -99,8 +100,102 @@
             </div>
           </dialog>
         </dialog-component>
-      {% endif %}
-    {% endfor %}
+      {% endfor %}
+    {% else %}
+      {% for i in (1..5) %}
+        {% liquid
+          assign avatar_key = 'avatar_' | append: i
+          assign name_key = 'name_' | append: i
+          assign modal_title_key = 'modal_title_' | append: i
+          assign video_url_key = 'video_url_' | append: i
+          assign caption_key = 'caption_' | append: i
+          assign avatar = block.settings[avatar_key]
+          assign name = block.settings[name_key]
+          assign modal_title = block.settings[modal_title_key]
+          assign video = block.settings[video_url_key]
+          assign caption = block.settings[caption_key]
+        %}
+        {% if avatar != blank or name != blank or video != blank %}
+          <dialog-component class="pdp-inline-social-proof__card">
+            <button
+              class="pdp-inline-social-proof__button button button-unstyled"
+              type="button"
+              on:click="/showDialog"
+              aria-label="{{ name | default: social_heading | escape }}"
+            >
+              {% if avatar != blank %}
+                {{
+                  avatar
+                  | image_url: width: 160
+                  | image_tag:
+                    class: 'pdp-inline-social-proof__avatar',
+                    loading: 'lazy',
+                    decoding: 'async',
+                    fetchpriority: 'low',
+                    widths: '80,120,160',
+                    sizes: '72px',
+                    alt: name
+                }}
+              {% else %}
+                <span class="pdp-inline-social-proof__avatar pdp-inline-social-proof__avatar--placeholder"></span>
+              {% endif %}
+            </button>
+
+            <dialog
+              ref="dialog"
+              class="pdp-inline-social-proof__dialog dialog-modal"
+              scroll-lock
+              aria-labelledby="pdp-inline-social-proof-title-{{ block.id }}-{{ i }}"
+            >
+              <div class="pdp-inline-social-proof__dialog-inner">
+                <h3 id="pdp-inline-social-proof-title-{{ block.id }}-{{ i }}" class="pdp-inline-social-proof__dialog-title">
+                  {{ modal_title | default: name | default: social_heading | escape }}
+                </h3>
+
+                <div class="pdp-inline-social-proof__video-frame">
+                  {% if video != blank %}
+                    {% if video.type == 'youtube' %}
+                      <iframe
+                        src="https://www.youtube.com/embed/{{ video.id }}?autoplay=1&rel=0"
+                        title="{{ modal_title | default: name | escape }}"
+                        loading="lazy"
+                        allow="autoplay; encrypted-media; picture-in-picture"
+                        allowfullscreen
+                      ></iframe>
+                    {% elsif video.type == 'vimeo' %}
+                      <iframe
+                        src="https://player.vimeo.com/video/{{ video.id }}?autoplay=1"
+                        title="{{ modal_title | default: name | escape }}"
+                        loading="lazy"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                      ></iframe>
+                    {% endif %}
+                  {% else %}
+                    <div class="pdp-inline-social-proof__video-placeholder">Add YouTube/Vimeo URL in the editor</div>
+                  {% endif %}
+                </div>
+
+                {% if caption != blank %}
+                  <div class="pdp-inline-social-proof__caption">
+                    {{ caption }}
+                  </div>
+                {% endif %}
+
+                <button
+                  ref="closeButton"
+                  on:click="/closeDialog"
+                  class="pdp-inline-social-proof__close button button-unstyled close-button"
+                  aria-label="{{ 'accessibility.close_dialog' | t }}"
+                >
+                  {{ 'icon-close.svg' | inline_asset_content }}
+                </button>
+              </div>
+            </dialog>
+          </dialog-component>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
   </div>
 </div>
 

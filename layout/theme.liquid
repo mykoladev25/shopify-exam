@@ -30,6 +30,9 @@
     {%- render 'scripts' -%}
     {%- render 'theme-styles-variables' -%}
     {%- render 'recoleta-fonts' -%}
+    {% if template.name == 'product' and template.suffix == 'pdp' %}
+      <link rel="stylesheet" href="{{ 'pdp-main.css' | asset_url }}">
+    {% endif %}
     {%- render 'color-schemes' -%}
 
     {% if request.design_mode %}

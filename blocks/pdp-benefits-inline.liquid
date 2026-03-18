@@ -1,21 +1,24 @@
+{% liquid
+  assign product = closest.product
+  assign benefits_heading = product.metafields.custom.pdp_benefits_heading.value | default: block.settings.heading
+  assign benefit_items = product.metafields.custom.pdp_benefits_items.value
+%}
+
 <div class="pdp-inline-benefits" {{ block.shopify_attributes }}>
-  {% if block.settings.heading != blank %}
+  {% if benefits_heading != blank %}
     <h2 class="pdp-inline-benefits__heading">
-      {{ block.settings.heading | escape }}
+      {{ benefits_heading | escape }}
     </h2>
   {% endif %}
 
   <div class="pdp-inline-benefits__grid">
-    {% for i in (1..6) %}
-      {% liquid
-        assign icon_key = 'icon_' | append: i
-        assign title_key = 'title_' | append: i
-        assign text_key = 'text_' | append: i
-        assign icon = block.settings[icon_key]
-        assign title = block.settings[title_key]
-        assign text = block.settings[text_key]
-      %}
-      {% if title != blank or text != blank or icon != blank %}
+    {% if benefit_items != blank %}
+      {% for benefit in benefit_items %}
+        {% liquid
+          assign icon = benefit.icon.value | default: benefit.icon
+          assign title = benefit.title.value | default: benefit.title
+          assign text = benefit.text
+        %}
         <article class="pdp-inline-benefits__item">
           {% if icon != blank %}
             {{
@@ -28,7 +31,7 @@
                 fetchpriority: 'low',
                 widths: '32,48,64',
                 sizes: '20px',
-                alt: title
+              alt: title
             }}
           {% endif %}
 
@@ -40,12 +43,53 @@
 
           {% if text != blank %}
             <div class="pdp-inline-benefits__text">
-              {{ text }}
+              {{ text | metafield_tag }}
             </div>
           {% endif %}
         </article>
-      {% endif %}
-    {% endfor %}
+      {% endfor %}
+    {% else %}
+      {% for i in (1..6) %}
+        {% liquid
+          assign icon_key = 'icon_' | append: i
+          assign title_key = 'title_' | append: i
+          assign text_key = 'text_' | append: i
+          assign icon = block.settings[icon_key]
+          assign title = block.settings[title_key]
+          assign text = block.settings[text_key]
+        %}
+        {% if title != blank or text != blank or icon != blank %}
+          <article class="pdp-inline-benefits__item">
+            {% if icon != blank %}
+              {{
+                icon
+                | image_url: width: 64
+                | image_tag:
+                  class: 'pdp-inline-benefits__icon',
+                  loading: 'lazy',
+                  decoding: 'async',
+                  fetchpriority: 'low',
+                  widths: '32,48,64',
+                  sizes: '20px',
+                  alt: title
+              }}
+            {% endif %}
+
+            {% if title != blank %}
+              <h3 class="pdp-inline-benefits__title">
+                {{ title | escape }}
+              </h3>
+            {% endif %}
+
+            {% if text != blank %}
+              <div class="pdp-inline-benefits__text">
+                {{ text }}
+              </div>
+            {% endif %}
+          </article>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
   </div>
 </div>
 
