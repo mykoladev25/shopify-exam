@@ -289,6 +289,7 @@
           "type": "benefit",
           "settings": {
             "label": "Neurological & Mental Health",
+            "image": "shopify://shop_images/blog1.jpg",
             "title": "Neurological & Mental Health",
             "description": "<p>Grounding helps calm and stabilize the nervous system, supporting those dealing with:</p><ul><li>Migraines & headaches</li><li>Neuropathy & brain fog</li><li>Anxiety, depression & mood swings</li><li>ADHD & focus issues</li><li>Insomnia & disrupted sleep</li></ul>",
             "link_label": "Explore the science behind these benefits",
@@ -299,6 +300,7 @@
           "type": "benefit",
           "settings": {
             "label": "Musculoskeletal Pain & Inflammation",
+            "image": "shopify://shop_images/blog2.jpg",
             "title": "Musculoskeletal Pain & Inflammation",
             "description": "<p>By reducing chronic inflammation, grounding can offer relief from:Arthritis (RA & OA)FibromyalgiaJoint, back & neck painChronic fatigue syndromePost-exercise soreness</p>",
             "link_label": "Explore the science behind these benefits",
@@ -309,6 +311,7 @@
           "type": "benefit",
           "settings": {
             "label": "Cardiovascular & Circulatory Health",
+            "image": "shopify://shop_images/blog3.jpg",
             "title": "Grounding supports healthy blood flow and thermal regulation. Ideal for those managing:Poor circulationHigh blood pressureSwollen legs & feetVaricose veinsCold extremities",
             "description": "",
             "link_label": "Explore the science behind these benefits",
@@ -319,6 +322,7 @@
           "type": "benefit",
           "settings": {
             "label": "Immune & Inflammatory Conditions",
+            "image": "shopify://shop_images/blog4.jpg",
             "title": "Immune & Inflammatory Conditions",
             "description": "<p>By calming the body’s inflammatory response, grounding may support conditions like:</p><ul><li>Autoimmune flare-ups (Lupus, MS, RA)</li><li>Allergies & asthma</li><li>Inflammation-related skin issues</li></ul>",
             "link_label": "Explore the science behind these benefits",
@@ -329,6 +333,7 @@
           "type": "benefit",
           "settings": {
             "label": "Hormonal & Metabolic Balance",
+            "image": "shopify://shop_images/blog5.jpg",
             "title": "Hormonal & Metabolic Balance",
             "description": "<p>Grounding helps support hormone and metabolic regulation. Particularly helpful for:</p><ul><li>Menopause & perimenopause</li><li>PCOS & irregular cycles</li><li>Thyroid imbalance</li><li>Insulin resistance & blood sugar issues<br/></li></ul>",
             "link_label": "",
@@ -339,6 +344,7 @@
           "type": "benefit",
           "settings": {
             "label": "Specialized Support",
+            "image": "shopify://shop_images/blog6.jpg",
             "title": "Specialized Support",
             "description": "<p>A daily grounding practice can also support:</p><ul><li>Injury & post-surgery recovery</li><li>Pregnancy support (with doctor approval)</li><li>Jet lag & circadian disruption</li><li>Skin health (eczema, psoriasis)</li><li>Athletic performance & muscle recovery</li></ul>",
             "link_label": "",
