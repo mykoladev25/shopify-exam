@@ -288,6 +288,7 @@
         "benefit_1": {
           "type": "benefit",
           "settings": {
+            "icon": "shopify://shop_images/Neurology--Streamline-Sharp-Material-Symbols_1.svg",
             "label": "Neurological & Mental Health",
             "image": "shopify://shop_images/blog1.jpg",
             "title": "Neurological & Mental Health",
@@ -299,6 +300,7 @@
         "benefit_Qe7TUg": {
           "type": "benefit",
           "settings": {
+            "icon": "shopify://shop_images/Rheumatology--Streamline-Sharp-Material-Symbols_1.svg",
             "label": "Musculoskeletal Pain & Inflammation",
             "image": "shopify://shop_images/blog2.jpg",
             "title": "Musculoskeletal Pain & Inflammation",
@@ -310,6 +312,7 @@
         "benefit_ae6mPC": {
           "type": "benefit",
           "settings": {
+            "icon": "shopify://shop_images/Hematology--Streamline-Sharp-Material-Symbols_1.svg",
             "label": "Cardiovascular & Circulatory Health",
             "image": "shopify://shop_images/blog3.jpg",
             "title": "Cardiovascular & Circulatory Health",
@@ -321,6 +324,7 @@
         "benefit_wUxcXh": {
           "type": "benefit",
           "settings": {
+            "icon": "shopify://shop_images/Blur-Off--Streamline-Sharp-Material-Symbols_1.svg",
             "label": "Immune & Inflammatory Conditions",
             "image": "shopify://shop_images/blog4.jpg",
             "title": "Immune & Inflammatory Conditions",
@@ -332,6 +336,7 @@
         "benefit_tB9iVE": {
           "type": "benefit",
           "settings": {
+            "icon": "shopify://shop_images/Genetics--Streamline-Sharp-Material-Symbols_1.jpg",
             "label": "Hormonal & Metabolic Balance",
             "image": "shopify://shop_images/blog5.jpg",
             "title": "Hormonal & Metabolic Balance",
@@ -343,6 +348,7 @@
         "benefit_gmFEWn": {
           "type": "benefit",
           "settings": {
+            "icon": "shopify://shop_images/Cardiology--Streamline-Sharp-Material-Symbols_1.svg",
             "label": "Specialized Support",
             "image": "shopify://shop_images/blog6.jpg",
             "title": "Specialized Support",
