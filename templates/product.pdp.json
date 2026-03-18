@@ -291,11 +291,25 @@
             "label": "Neurological & Mental Health",
             "title": "Neurological & Mental Health",
             "description": "<p>Grounding helps calm and stabilize the nervous system, supporting those dealing with:</p><ul><li>Migraines & headaches</li><li>Neuropathy & brain fog</li><li>Anxiety, depression & mood swings</li><li>ADHD & focus issues</li><li>Insomnia & disrupted sleep</li></ul>",
-            "link_label": "Explore the science behind these benefits"
+            "link_label": "Explore the science behind these benefits",
+            "link_url": ""
+          }
+        },
+        "benefit_Qe7TUg": {
+          "type": "benefit",
+          "settings": {
+            "label": "",
+            "title": "",
+            "description": "",
+            "link_label": "",
+            "link_url": ""
           }
         }
       },
-      "block_order": ["benefit_1"],
+      "block_order": [
+        "benefit_1",
+        "benefit_Qe7TUg"
+      ],
       "settings": {
         "heading": "<p>One Natural Solution. Whole-Body Benefits.</p>",
         "body": "<p>You may be missing the Earth’s most powerful remedy. Grounding restores your connection to it, helping reduce inflammation, calm your system, and support deep, uninterrupted sleep.</p>",
@@ -320,6 +334,7 @@
         "row_2": {
           "type": "row",
           "settings": {
+            "highlight": false,
             "solution": "Sleeping Pills",
             "how_it_works": "Sedate the brain with sleep-inducing chemicals",
             "what_to_consider": "Tolerance builds, grogginess, not long-term safe",
@@ -328,7 +343,10 @@
           }
         }
       },
-      "block_order": ["row_1", "row_2"],
+      "block_order": [
+        "row_1",
+        "row_2"
+      ],
       "settings": {
         "heading": "Why We Are Really Different",
         "col_solution": "Solution",
