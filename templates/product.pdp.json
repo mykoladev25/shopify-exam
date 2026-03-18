@@ -302,7 +302,7 @@
             "label": "Musculoskeletal Pain & Inflammation",
             "image": "shopify://shop_images/blog2.jpg",
             "title": "Musculoskeletal Pain & Inflammation",
-            "description": "<p>By reducing chronic inflammation, grounding can offer relief from:Arthritis (RA & OA)FibromyalgiaJoint, back & neck painChronic fatigue syndromePost-exercise soreness</p>",
+            "description": "<p>By reducing chronic inflammation, grounding can offer relief from:</p><ul><li>Arthritis (RA & OA)</li><li>FibromyalgiaJoint, back & neck pain</li><li>Chronic fatigue syndrome</li><li>Post-exercise soreness</li></ul>",
             "link_label": "Explore the science behind these benefits",
             "link_url": "shopify://collections/all"
           }
@@ -312,8 +312,8 @@
           "settings": {
             "label": "Cardiovascular & Circulatory Health",
             "image": "shopify://shop_images/blog3.jpg",
-            "title": "Grounding supports healthy blood flow and thermal regulation. Ideal for those managing:Poor circulationHigh blood pressureSwollen legs & feetVaricose veinsCold extremities",
-            "description": "",
+            "title": "Cardiovascular & Circulatory Health",
+            "description": "<p>Grounding supports healthy blood flow and thermal regulation. Ideal for those managing:</p><ul><li>Poor circulation</li><li>High blood pressure</li><li>Swollen legs & feet</li><li>Varicose veins</li><li>Cold extremities</li></ul>",
             "link_label": "Explore the science behind these benefits",
             "link_url": "shopify://collections/all"
           }
