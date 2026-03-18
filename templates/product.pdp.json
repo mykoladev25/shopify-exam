@@ -298,10 +298,10 @@
         "benefit_Qe7TUg": {
           "type": "benefit",
           "settings": {
-            "label": "",
-            "title": "",
-            "description": "",
-            "link_label": "",
+            "label": "Musculoskeletal Pain & Inflammation",
+            "title": "Musculoskeletal Pain & Inflammation",
+            "description": "<p>By reducing chronic inflammation, grounding can offer relief from:Arthritis (RA & OA)FibromyalgiaJoint, back & neck painChronic fatigue syndromePost-exercise soreness</p>",
+            "link_label": "Explore the science behind these benefits",
             "link_url": ""
           }
         }
