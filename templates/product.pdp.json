@@ -304,11 +304,55 @@
             "link_label": "Explore the science behind these benefits",
             "link_url": "shopify://collections/all"
           }
+        },
+        "benefit_ae6mPC": {
+          "type": "benefit",
+          "settings": {
+            "label": "Cardiovascular & Circulatory Health",
+            "title": "Grounding supports healthy blood flow and thermal regulation. Ideal for those managing:Poor circulationHigh blood pressureSwollen legs & feetVaricose veinsCold extremities",
+            "description": "",
+            "link_label": "Explore the science behind these benefits",
+            "link_url": "shopify://collections/all"
+          }
+        },
+        "benefit_wUxcXh": {
+          "type": "benefit",
+          "settings": {
+            "label": "Immune & Inflammatory Conditions",
+            "title": "Immune & Inflammatory Conditions",
+            "description": "<p>By calming the body’s inflammatory response, grounding may support conditions like:</p><ul><li>Autoimmune flare-ups (Lupus, MS, RA)</li><li>Allergies & asthma</li><li>Inflammation-related skin issues</li></ul>",
+            "link_label": "Explore the science behind these benefits",
+            "link_url": "shopify://collections/all"
+          }
+        },
+        "benefit_tB9iVE": {
+          "type": "benefit",
+          "settings": {
+            "label": "Hormonal & Metabolic Balance",
+            "title": "Hormonal & Metabolic Balance",
+            "description": "<p>Grounding helps support hormone and metabolic regulation. Particularly helpful for:</p><ul><li>Menopause & perimenopause</li><li>PCOS & irregular cycles</li><li>Thyroid imbalance</li><li>Insulin resistance & blood sugar issues<br/></li></ul>",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "benefit_gmFEWn": {
+          "type": "benefit",
+          "settings": {
+            "label": "Specialized Support",
+            "title": "Specialized Support",
+            "description": "<p>A daily grounding practice can also support:</p><ul><li>Injury & post-surgery recovery</li><li>Pregnancy support (with doctor approval)</li><li>Jet lag & circadian disruption</li><li>Skin health (eczema, psoriasis)</li><li>Athletic performance & muscle recovery</li></ul>",
+            "link_label": "",
+            "link_url": ""
+          }
         }
       },
       "block_order": [
         "benefit_1",
-        "benefit_Qe7TUg"
+        "benefit_Qe7TUg",
+        "benefit_ae6mPC",
+        "benefit_wUxcXh",
+        "benefit_tB9iVE",
+        "benefit_gmFEWn"
       ],
       "settings": {
         "heading": "<p>One Natural Solution. Whole-Body Benefits.</p>",
