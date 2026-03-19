@@ -386,8 +386,9 @@
           "type": "row",
           "settings": {
             "highlight": true,
-            "icon": "shopify://shop_images/freepik__candid-photography-with-natural-textures-and-highl__97877_1.jpg",
+            "icon": "shopify://shop_images/4d8cdd7a3b8400c27f224c37fff3899515789138.png",
             "solution": "Terra Therapy",
+            "solution_logo": "shopify://shop_images/TT_LOGO_WHITE_1.png",
             "how_it_works": "Reconnects body to Earth’s natural charge to reduce inflammation and improve sleep",
             "what_to_consider": "Requires grounded outlet and direct skin contact for best results",
             "cost_over_time": "One-time purchase",
