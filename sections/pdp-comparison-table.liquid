@@ -269,9 +269,7 @@
       </div>
     </div>
   </div>
-</div>
-
-      {% if product != blank %}
+  {% if product != blank %}
         {%- assign product_form_id = 'PdpComparison-ProductForm-' | append: section.id -%}
         <product-form-component
           class="pdp-comparison__cta"
@@ -297,12 +295,12 @@
           {%- endform -%}
         </product-form-component>
       {% endif %}
+</div>
 {% stylesheet %}
   .pdp-comparison {
     padding: 0.5rem 0 0.5rem;
     background: #F4F3EE;
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 920px;
+    overflow-x: clip;
   }
 
   .pdp-comparison__inner {
@@ -331,12 +329,21 @@
     align-items: start;
   }
 
+  .pdp-comparison__mobile-solution,
+  .pdp-comparison__mobile {
+    min-width: 0;
+    overflow: visible;
+  }
+
   .pdp-comparison__mobile-panel {
     min-height: 21.6875rem;
     border-radius: 0.25rem;
     background: #fff;
     box-shadow: 0 0.424rem 1.061rem rgb(0 0 0 / 0.05);
-    overflow: hidden;
+    overflow: visible;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .pdp-comparison__mobile-panel-heading {
@@ -349,14 +356,20 @@
 
   .pdp-comparison__mobile-solution-featured,
   .pdp-comparison__mobile-featured-value {
+    position: relative;
     min-height: 5.0625rem;
     margin: 0;
     padding: 0.875rem 0.9375rem;
-    background-image: var(--pdp-comparison-highlight-bg);
-    background-position: center;
-    background-size: cover;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     border-radius: 0.25rem;
     color: #fff;
+    background-color: #5f8e43;
+    background-image: var(--pdp-comparison-highlight-bg);
+    background-position: 2%;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 
   .pdp-comparison__mobile-solution-featured {
@@ -364,10 +377,14 @@
     justify-items: center;
     gap: 0.5rem;
     margin-top: 0.125rem;
+    margin-right: -0.875rem;
+    padding-right: calc(0.9375rem + 0.875rem);
     text-align: center;
     font-size: 0.6875rem;
     font-weight: 700;
     line-height: 1.2;
+    position: relative;
+    align-items: flex-end;
   }
 
   .pdp-comparison__mobile-value-list,
@@ -400,10 +417,6 @@
     text-align: center;
   }
 
-  .pdp-comparison__mobile {
-    min-width: 0;
-  }
-
   .pdp-comparison__cards {
     display: flex;
     gap: 0.875rem;
@@ -411,6 +424,7 @@
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     contain: content;
+    min-width: 0;
   }
 
   .pdp-comparison__cards::-webkit-scrollbar {
@@ -425,6 +439,9 @@
     background: #fff;
     box-shadow: 0 0.424rem 1.061rem rgb(0 0 0 / 0.05);
     overflow: hidden;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .pdp-comparison__mobile-featured-value {
@@ -443,14 +460,15 @@
 
   .pdp-comparison__solution-icon--featured {
     height: auto;
-    width: calc(80 / 16 * 1rem);
-    height: calc(80 / 16 * 1rem);
+    width: calc(54 / 16 * 1rem);
+    height: calc(54 / 16 * 1rem);
     rotate: -16.95deg;
     opacity: 1;
     border-radius: 5px;
-    position: relative;
-    margin: 0 auto;
-    margin-bottom: -30px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
   }
 
   .pdp-comparison__solution-wordmark {
@@ -480,25 +498,15 @@
     background: #a8ca1b;
   }
 
-  .pdp-comparison__cta .button.add-to-cart-button {
-    width: 100%;
-    max-width: calc(350 / 16 * 1rem);
-    min-height: 4.1875rem;
-    margin: 0 auto;
-    border: 0;
-    border-radius: 999px;
-    background: #a8ca1b;
-    color: #31331e;
-    font-family: var(--font-recoleta);
-    font-size: 1.875rem;
-    font-weight: 400;
-    line-height: 1;
-    text-transform: uppercase;
-  }
-
-  @media screen and (min-width: 750px) {
+  @media screen and (min-width: 1440px) {
     .pdp-comparison {
-      padding: 1rem 0 4rem;
+      padding: 1rem 0 2rem;
+    }
+
+    .pdp-comparison__solution-icon--featured {
+      height: auto;
+      width: calc(80 / 16 * 1rem);
+      height: calc(80 / 16 * 1rem);
     }
 
     .pdp-comparison__heading {
@@ -517,6 +525,10 @@
 
     .pdp-comparison__cta .button.add-to-cart-button {
       max-width: calc(372 / 16 * 1rem);
+    }
+
+    .pdp-comparison__cta  form {
+      padding-top: 0.5rem;
     }
 
     .pdp-comparison__desktop-shell {
@@ -554,20 +566,31 @@
     }
 
     .pdp-comparison__desktop-row.is-highlighted {
-      margin: 0 -1.5rem;
+      position: relative;
+      margin: 0;
       border-radius: 0.3125rem;
-      overflow: hidden;
+      overflow: visible;
+      z-index: 1;
+    }
+
+    .pdp-comparison__desktop-row.is-highlighted::before {
+      content: '';
+      position: absolute;
+      inset: 0 -1.5rem;
+      border-radius: 0.3125rem;
       background-color: #5f8e43;
       background-image: var(--pdp-comparison-highlight-bg);
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
+      z-index: -1;
     }
 
     .pdp-comparison__desktop-row.is-highlighted .pdp-comparison__body-cell,
     .pdp-comparison__desktop-row.is-highlighted .pdp-comparison__solution-cell {
       color: #fff;
       border-color: rgb(255 255 255 / 0.18);
+      border-left: transparent;
     }
 
     .pdp-comparison__solution-cell,
@@ -577,9 +600,11 @@
       font-size: 1rem;
       line-height: 1.25;
       min-height: 7.3125rem;
+      position: relative;
+      background: transparent;
     }
 
-    .pdp-comparison__solution-cell,
+    .pdp-comparison__solution-cell:not(:first-child),
     .pdp-comparison__body-cell:not(:first-child),
     .pdp-comparison__head-cell:not(:first-child) {
       border-left: 1px solid rgb(49 51 30 / 0.24);
@@ -598,6 +623,11 @@
       justify-items: start;
       text-align: left;
       gap: 0.875rem;
+      position: relative;
+    }
+
+    .pdp-comparison__solution-cell--featured:has(img) {
+      padding-top: calc(70 / 16 * 1rem);
     }
 
     .pdp-comparison__solution-cell--featured .pdp-comparison__solution-wordmark {

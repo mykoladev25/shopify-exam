@@ -118,14 +118,31 @@ const initComparison = (scope) => {
   const dots = [...scope.querySelectorAll('[data-comparison-dot]')];
   if (!cards || !dots.length || scope.dataset.pdpComparisonInitialized === 'true') return;
 
+  const cardEls = [...cards.querySelectorAll('.pdp-comparison__card')];
+
   const updateDots = () => {
-    const index = Math.round(cards.scrollLeft / Math.max(cards.clientWidth, 1));
-    dots.forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
+    if (!cardEls.length) return;
+
+    const left = cards.scrollLeft;
+    let bestIndex = 0;
+    let bestDist = Number.POSITIVE_INFINITY;
+
+    cardEls.forEach((el, i) => {
+      const dist = Math.abs(el.offsetLeft - left);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIndex = i;
+      }
+    });
+
+    dots.forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === bestIndex));
   };
 
   dots.forEach((dot, index) => {
     dot.addEventListener('click', () => {
-      cards.scrollTo({ left: cards.clientWidth * index, behavior: 'smooth' });
+      const targetCard = cardEls[index];
+      if (!targetCard) return;
+      cards.scrollTo({ left: targetCard.offsetLeft, behavior: 'smooth' });
     });
   });
 
