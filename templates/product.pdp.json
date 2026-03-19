@@ -220,9 +220,9 @@
           "block_order": [
             "pdp_hero_header",
             "price_main",
+            "pdp_benefits_inline",
             "variant_picker_main",
             "buy_buttons_main",
-            "pdp_benefits_inline",
             "pdp_social_proof_inline",
             "pdp_tabs_inline"
           ]

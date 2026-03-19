@@ -2,20 +2,37 @@
 
 <div class="pdp-benefit-rotator section section--page-width color-{{ section.settings.color_scheme }}" data-pdp-benefit-rotator data-rotate-seconds="{{ section.settings.rotate_seconds }}">
   <div class="pdp-benefit-rotator__inner">
-    <div class="pdp-benefit-rotator__intro">
-      {% if section.settings.heading != blank %}
-        <h2 class="pdp-benefit-rotator__heading">{{ section.settings.heading }}</h2>
-      {% endif %}
-
-      {% if section.settings.body != blank %}
-        <div class="pdp-benefit-rotator__body rte">{{ section.settings.body }}</div>
-      {% endif %}
-    </div>
-
     {% if section.blocks.size > 0 %}
       <div class="pdp-benefit-rotator__layout">
+        <div class="pdp-benefit-rotator__intro">
+          {% if section.settings.heading != blank %}
+            <h2 class="pdp-benefit-rotator__heading">{{ section.settings.heading }}</h2>
+          {% endif %}
+
+          {% if section.settings.body != blank %}
+            <div class="pdp-benefit-rotator__body rte">{{ section.settings.body }}</div>
+          {% endif %}
+        </div>
+
+        <div
+          class="pdp-benefit-rotator__mobile-active-pill"
+          data-rotator-mobile-active
+          aria-hidden="true"
+        ></div>
+
         <div class="pdp-benefit-rotator__nav" role="tablist" aria-label="{{ section.settings.heading | strip_html | escape }}">
           {% for block in section.blocks %}
+            {% liquid
+              assign inline_icon_markup = blank
+              if block.settings.icon_asset != blank
+                capture inline_icon_markup
+                  echo block.settings.icon_asset | inline_asset_content
+                endcapture
+                if inline_icon_markup contains 'Asset not found'
+                  assign inline_icon_markup = blank
+                endif
+              endif
+            %}
             <button
               class="pdp-benefit-rotator__pill{% if forloop.first %} is-active{% endif %}"
               type="button"
@@ -24,12 +41,16 @@
               aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
               {{ block.shopify_attributes }}
             >
-              {% if block.settings.icon != blank %}
+              {% if inline_icon_markup != blank %}
+                <span class="pdp-benefit-rotator__pill-icon pdp-benefit-rotator__pill-icon--inline" aria-hidden="true">
+                  {{ inline_icon_markup }}
+                </span>
+              {% elsif block.settings.icon != blank %}
                 {{
                   block.settings.icon
                   | image_url: width: 48
                   | image_tag:
-                      class: 'pdp-benefit-rotator__pill-icon',
+                      class: 'pdp-benefit-rotator__pill-icon pdp-benefit-rotator__pill-icon--image',
                       loading: 'lazy',
                       decoding: 'async',
                       fetchpriority: 'low',
@@ -78,13 +99,27 @@
 
                 {% if block.settings.link_label != blank and block.settings.link_url != blank %}
                   <a class="pdp-benefit-rotator__link" href="{{ block.settings.link_url }}">
-                    {{ block.settings.link_label | escape }}
+                      {{- 'icon-tube.svg' | inline_asset_content -}}
+                    <span class="pdp-benefit-rotator__text">
+                      {{ block.settings.link_label | escape }}
+                    </span>
                   </a>
                 {% endif %}
               </div>
             </article>
           {% endfor %}
         </div>
+
+        {% if section.blocks.size > 1 %}
+          <div class="pdp-benefit-rotator__arrows" aria-hidden="true">
+            <button class="pdp-benefit-rotator__arrow pdp-benefit-rotator__arrow--prev" type="button" data-rotator-prev aria-label="Previous slide">
+              {{ 'icon-chevron-left.svg' | inline_asset_content }}
+            </button>
+            <button class="pdp-benefit-rotator__arrow pdp-benefit-rotator__arrow--next" type="button" data-rotator-next aria-label="Next slide">
+              {{ 'icon-chevron-right.svg' | inline_asset_content }}
+            </button>
+          </div>
+        {% endif %}
       </div>
     {% endif %}
   </div>
@@ -99,7 +134,6 @@
   }
 
   .pdp-benefit-rotator__inner {
-    max-width: 1200px;
     margin: 0 auto;
   }
 
@@ -107,17 +141,29 @@
     margin: 0 0 0.875rem;
     color: var(--pdp-hero-ink);
     font-family: var(--font-recoleta);
-    font-size: clamp(2rem, 6vw, 4rem);
+    font-size: clamp(1.5rem, 6vw, 4rem);
     font-weight: 400;
-    line-height: 0.95;
     letter-spacing: -0.04em;
+    line-height: normal;
+    text-align: center;
+    padding: 0 26px;
+  }
+
+  .pdp-benefit-rotator__panels {
+    order: 2;
+  }
+
+  .pdp-benefit-rotator__arrows {
+    display: none;
   }
 
   .pdp-benefit-rotator__body {
     max-width: 42rem;
+    margin: 0 auto;
     color: var(--pdp-hero-muted);
     font-size: 0.9375rem;
     line-height: 1.6;
+    text-align: center;
   }
 
   .pdp-benefit-rotator__body > *:first-child {
@@ -131,11 +177,20 @@
     contain: layout style;
   }
 
+  .pdp-benefit-rotator__intro {
+    order: 0;
+  }
+
+  .pdp-benefit-rotator__mobile-active-pill {
+    display: block;
+    order: 1;
+  }
+
   .pdp-benefit-rotator__nav {
     display: flex;
-    gap: 0.625rem;
-    overflow-x: auto;
-    scrollbar-width: none;
+    flex-direction: column;
+    gap: 0.875rem;
+    order: 3;
   }
 
   .pdp-benefit-rotator__nav::-webkit-scrollbar {
@@ -151,22 +206,69 @@
     border: 1px solid #8b8c7c;
     border-radius: 999px;
     background: transparent;
-    color: #535548;
+    color: var(--pdp-hero-ink);
     font-size: 0.875rem;
-    white-space: nowrap;
     cursor: pointer;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .pdp-benefit-rotator__mobile-active-pill .pdp-benefit-rotator__pill {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pdp-benefit-rotator__nav .pdp-benefit-rotator__pill.is-active {
+    display: none;
   }
 
   .pdp-benefit-rotator__pill.is-active {
-    border-color: #2e3520;
-    background: #2e3520;
-    color: #f4f1e6;
+    border-color: var(--pdp-hero-ink);
+    background: var(--pdp-hero-ink);
+    color: white;
   }
 
   .pdp-benefit-rotator__pill-icon {
     width: 1rem;
     height: 1rem;
+    flex: 0 0 auto;
+  }
+
+  .pdp-benefit-rotator__pill-icon--inline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #31331e;
+  }
+
+  .pdp-benefit-rotator__pill-icon--inline :is(svg, img) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .pdp-benefit-rotator__pill-icon--inline svg {
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  .pdp-benefit-rotator__pill-icon--inline svg :is(path, circle, rect, ellipse, polygon, polyline, line) {
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  .pdp-benefit-rotator__pill-icon--image {
     object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(18%) sepia(14%) saturate(717%) hue-rotate(27deg) brightness(95%)
+      contrast(92%);
+  }
+
+  .pdp-benefit-rotator__pill.is-active .pdp-benefit-rotator__pill-icon--inline {
+    color: #fff;
+  }
+
+  .pdp-benefit-rotator__pill.is-active .pdp-benefit-rotator__pill-icon--image {
+    filter: brightness(0) invert(1);
   }
 
   .pdp-benefit-rotator__panel {
@@ -179,10 +281,11 @@
 
   .pdp-benefit-rotator__panel.is-active {
     display: grid;
+    order: 2;
   }
 
   .pdp-benefit-rotator__media {
-    min-height: 16rem;
+    display: none;
   }
 
   .pdp-benefit-rotator__image {
@@ -194,16 +297,16 @@
   .pdp-benefit-rotator__content {
     display: grid;
     align-content: start;
-    gap: 1rem;
+    gap: calc(35 / 16 * 1rem);
     padding: 1.5rem;
   }
 
   .pdp-benefit-rotator__title {
     margin: 0;
     font-family: var(--font-recoleta);
-    font-size: clamp(1.875rem, 5vw, 3.125rem);
+    font-size: calc(24 / 16 * 1rem);
     font-weight: 400;
-    line-height: 0.98;
+    line-height: normal;
     letter-spacing: -0.03em;
   }
 
@@ -214,6 +317,7 @@
 
   .pdp-benefit-rotator__description > *:first-child {
     margin-top: 0;
+    margin-bottom: calc(35 / 16 * 1rem);
   }
 
   .pdp-benefit-rotator__description > *:last-child {
@@ -228,34 +332,159 @@
     text-underline-offset: 0.2em;
   }
 
-  @media screen and (min-width: 750px) {
+  .pdp-benefit-rotator__link svg {
+      margin: 0 auto;
+  }
+
+  .pdp-benefit-rotator__text {
+    display: block;
+    margin-top: calc(10 / 16 * 1rem);
+    text-align: center;
+  }
+
+  @media screen and (min-width: 1440px) {
     .pdp-benefit-rotator {
       padding: 3rem 0;
     }
 
-    .pdp-benefit-rotator__layout {
-      grid-template-columns: minmax(16rem, 18rem) minmax(0, 1fr);
-      align-items: start;
-    }
-
-    .pdp-benefit-rotator__nav {
+    .pdp-benefit-rotator__intro {
+      grid-area: intro;
       display: grid;
       align-content: start;
       gap: 0.75rem;
+      max-width: none;
+      margin-bottom: 0;
+    }
+
+    .pdp-benefit-rotator__heading {
+      margin-bottom: 0;
+      font-size: clamp(3rem, 5.4vw, 4.75rem);
+      line-height: 0.94;
+      text-align: left;
+      padding: 0;
+    }
+
+    .pdp-benefit-rotator__body {
+      margin: 0;
+      max-width: 44rem;
+      text-align: left;
+      font-size: 1.125rem;
+      line-height: 1.45;
+    }
+
+    .pdp-benefit-rotator__mobile-active-pill {
+      display: none;
+    }
+
+    .pdp-benefit-rotator__layout {
+      grid-template-columns: minmax(20rem, 1.05fr) minmax(18rem, 0.95fr) minmax(24rem, 1fr);
+      grid-template-areas:
+        'intro intro content'
+        'nav media content';
+      align-items: start;
+      column-gap: 1.25rem;
+      row-gap: 1.5rem;
+      margin-top: 0;
+    }
+
+    .pdp-benefit-rotator__nav {
+      grid-area: nav;
+      align-content: start;
+      gap: 0.75rem;
       overflow: visible;
+      order: 1;
+    }
+
+    .pdp-benefit-rotator__nav .pdp-benefit-rotator__pill.is-active {
+      display: inline-flex;
+    }
+
+    .pdp-benefit-rotator__pill {
+      width: 100%;
+      justify-content: flex-start;
+      padding: 0.875rem 1.25rem;
+      font-size: 1rem;
+    }
+
+    .pdp-benefit-rotator__panels {
+      display: contents;
     }
 
     .pdp-benefit-rotator__panel.is-active {
-      grid-template-columns: minmax(16rem, 0.65fr) minmax(20rem, 1fr);
-      min-height: 30rem;
+      display: contents;
+      min-height: 0;
+      max-width: none;
+      order: 2;
     }
 
     .pdp-benefit-rotator__media {
+      grid-area: media;
       min-height: 100%;
+      display: block;
+      max-width: 580px;
+      width: 100%;
+      align-self: stretch;
+      border-radius: 0.3125rem;
+      overflow: hidden;
+      position: relative;
+      right: -20px;
     }
 
     .pdp-benefit-rotator__content {
-      padding: 3rem;
+      grid-area: content;
+      min-width: 0;
+      min-height: 39rem;
+      background: #2e3520;
+      padding: 4rem 3.5rem 3rem;
+      border-radius: 0.3125rem;
+      margin-top: auto;
+    }
+
+    .pdp-benefit-rotator__title {
+      font-size: 3rem;
+      line-height: calc(50 / 16 * 1rem);
+    }
+
+    .pdp-benefit-rotator__description {
+      font-size: 1.0625rem;
+      line-height: 1.5;
+    }
+
+    .pdp-benefit-rotator__arrows {
+      display: block;
+    }
+
+    .pdp-benefit-rotator__arrow {
+      position: absolute;
+      top: 80%;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3.5rem;
+      height: 3.5rem;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--pdp-hero-ink);
+      box-shadow: 0 12px 24px rgb(48 53 34 / 12%);
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+    .pdp-benefit-rotator__arrow svg {
+      width: 1rem;
+      height: 1rem;
+      display: block;
+    }
+
+    .pdp-benefit-rotator__arrow--prev {
+      left: calc(36.5% - 1.75rem);
+    }
+
+    .pdp-benefit-rotator__arrow--next {
+      right: -1.75rem;
     }
   }
 {% endstylesheet %}
@@ -301,6 +530,12 @@
           "type": "image_picker",
           "id": "icon",
           "label": "Pill icon"
+        },
+        {
+          "type": "text",
+          "id": "icon_asset",
+          "label": "Pill icon asset filename",
+          "info": "Theme asset SVG filename, e.g. cardiology.svg. Use this for exact color control."
         },
         {
           "type": "text",

@@ -94,17 +94,13 @@
 </div>
 
 {% stylesheet %}
-  .pdp-inline-benefits {
-    padding-bottom: 0.25rem;
-  }
-
   .pdp-inline-benefits__heading {
     margin: 0 0 1rem;
     color: var(--pdp-hero-ink);
-    font-family: var(--font-recoleta);
     font-size: 1rem;
     font-weight: 600;
     line-height: 1.2;
+    font-family: var(--font-paragraph--family);
   }
 
   .pdp-inline-benefits__grid {
@@ -112,6 +108,8 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem 1.25rem;
     contain: layout style;
+    padding-bottom: calc(13 / 16 * 1rem);
+    border-bottom: solid 1px #0F4881;
   }
 
   .pdp-inline-benefits__item {
@@ -121,8 +119,8 @@
   }
 
   .pdp-inline-benefits__icon {
-    width: 1.25rem;
-    height: 1.25rem;
+    max-width: calc(24 / 16 * 1rem);
+    max-height: calc(24 / 16 * 1rem);
     object-fit: contain;
   }
 
@@ -136,8 +134,6 @@
 
   .pdp-inline-benefits__text {
     color: var(--pdp-hero-muted);
-    font-size: 0.8125rem;
-    line-height: 1.35;
   }
 
   .pdp-inline-benefits__text > * {

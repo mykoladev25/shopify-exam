@@ -1,7 +1,18 @@
 const initInlineTabs = (scope) => {
   const buttons = scope.querySelectorAll('[data-tab-button]');
   const panels = scope.querySelectorAll('[data-tab-panel]');
+  const indicator = scope.querySelector('[data-tab-indicator]');
   if (!buttons.length || !panels.length || scope.dataset.pdpTabsInitialized === 'true') return;
+
+  const updateIndicator = (button) => {
+    if (!indicator || !button) return;
+    const navRect = button.parentElement?.getBoundingClientRect();
+    const buttonRect = button.getBoundingClientRect();
+    if (!navRect.width || !buttonRect.width) return;
+
+    indicator.style.width = `${buttonRect.width}px`;
+    indicator.style.transform = `translateX(${buttonRect.left - navRect.left}px)`;
+  };
 
   buttons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -16,7 +27,17 @@ const initInlineTabs = (scope) => {
       panels.forEach((panel) => {
         panel.classList.toggle('is-active', panel.id === target);
       });
+
+      updateIndicator(button);
     });
+  });
+
+  const activeButton = [...buttons].find((button) => button.classList.contains('is-active')) || buttons[0];
+  updateIndicator(activeButton);
+
+  window.addEventListener('resize', () => {
+    const currentActiveButton = [...buttons].find((button) => button.classList.contains('is-active')) || buttons[0];
+    updateIndicator(currentActiveButton);
   });
 
   scope.dataset.pdpTabsInitialized = 'true';
@@ -25,6 +46,9 @@ const initInlineTabs = (scope) => {
 const initBenefitRotator = (scope) => {
   const triggers = [...scope.querySelectorAll('[data-rotator-trigger]')];
   const panels = [...scope.querySelectorAll('[data-rotator-panel]')];
+  const mobileActive = scope.querySelector('[data-rotator-mobile-active]');
+  const prevButton = scope.querySelector('[data-rotator-prev]');
+  const nextButton = scope.querySelector('[data-rotator-next]');
   if (!triggers.length || !panels.length || scope.dataset.pdpRotatorInitialized === 'true') return;
 
   let index = 0;
@@ -45,6 +69,17 @@ const initBenefitRotator = (scope) => {
     panels.forEach((panel) => {
       panel.classList.toggle('is-active', panel.id === targetId);
     });
+
+    if (mobileActive && triggers[index]) {
+      mobileActive.innerHTML = triggers[index].outerHTML;
+      const activeButton = mobileActive.querySelector('.pdp-benefit-rotator__pill');
+      if (activeButton) {
+        activeButton.classList.add('is-active');
+        activeButton.setAttribute('aria-selected', 'true');
+        activeButton.setAttribute('tabindex', '-1');
+        activeButton.disabled = true;
+      }
+    }
   };
 
   const start = () => {
@@ -59,6 +94,16 @@ const initBenefitRotator = (scope) => {
       activate(triggerIndex);
       start();
     });
+  });
+
+  prevButton?.addEventListener('click', () => {
+    activate((index - 1 + triggers.length) % triggers.length);
+    start();
+  });
+
+  nextButton?.addEventListener('click', () => {
+    activate((index + 1) % triggers.length);
+    start();
   });
 
   scope.addEventListener('mouseenter', () => window.clearInterval(timerId));
@@ -104,4 +149,3 @@ if (document.readyState === 'loading') {
 } else {
   initPdpSections();
 }
-

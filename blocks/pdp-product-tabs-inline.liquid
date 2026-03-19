@@ -74,6 +74,7 @@
         {{ tab_4_heading | escape }}
       </button>
     {% endif %}
+    <span class="pdp-inline-tabs__desktop-indicator" data-tab-indicator aria-hidden="true"></span>
   </div>
 
   <div class="pdp-inline-tabs__desktop-panels">
@@ -104,7 +105,10 @@
       <details class="pdp-inline-tabs__accordion" open>
         <summary class="pdp-inline-tabs__accordion-summary">
           {{ tab_1_heading | escape }}
-          <span class="pdp-inline-tabs__accordion-icon">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+          <span class="pdp-inline-tabs__accordion-icon">
+            <span class="pdp-inline-tabs__accordion-icon-plus">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+            <span class="pdp-inline-tabs__accordion-icon-minus">{{ 'icon-minus.svg' | inline_asset_content }}</span>
+          </span>
         </summary>
         <div class="pdp-inline-tabs__accordion-content rte">{{ tab_1_content }}</div>
       </details>
@@ -113,7 +117,10 @@
       <details class="pdp-inline-tabs__accordion" {% if tab_1_content == blank %}open{% endif %}>
         <summary class="pdp-inline-tabs__accordion-summary">
           {{ tab_2_heading | escape }}
-          <span class="pdp-inline-tabs__accordion-icon">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+          <span class="pdp-inline-tabs__accordion-icon">
+            <span class="pdp-inline-tabs__accordion-icon-plus">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+            <span class="pdp-inline-tabs__accordion-icon-minus">{{ 'icon-minus.svg' | inline_asset_content }}</span>
+          </span>
         </summary>
         <div class="pdp-inline-tabs__accordion-content rte">{{ tab_2_content }}</div>
       </details>
@@ -122,7 +129,10 @@
       <details class="pdp-inline-tabs__accordion" {% if tab_1_content == blank and tab_2_content == blank %}open{% endif %}>
         <summary class="pdp-inline-tabs__accordion-summary">
           {{ tab_3_heading | escape }}
-          <span class="pdp-inline-tabs__accordion-icon">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+          <span class="pdp-inline-tabs__accordion-icon">
+            <span class="pdp-inline-tabs__accordion-icon-plus">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+            <span class="pdp-inline-tabs__accordion-icon-minus">{{ 'icon-minus.svg' | inline_asset_content }}</span>
+          </span>
         </summary>
         <div class="pdp-inline-tabs__accordion-content rte">{{ tab_3_content }}</div>
       </details>
@@ -131,7 +141,10 @@
       <details class="pdp-inline-tabs__accordion" {% if tab_1_content == blank and tab_2_content == blank and tab_3_content == blank %}open{% endif %}>
         <summary class="pdp-inline-tabs__accordion-summary">
           {{ tab_4_heading | escape }}
-          <span class="pdp-inline-tabs__accordion-icon">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+          <span class="pdp-inline-tabs__accordion-icon">
+            <span class="pdp-inline-tabs__accordion-icon-plus">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+            <span class="pdp-inline-tabs__accordion-icon-minus">{{ 'icon-minus.svg' | inline_asset_content }}</span>
+          </span>
         </summary>
         <div class="pdp-inline-tabs__accordion-content rte">{{ tab_4_content }}</div>
       </details>
@@ -141,7 +154,6 @@
 
 {% stylesheet %}
   .pdp-inline-tabs {
-    padding-top: 1.25rem;
     border-top: 1px solid var(--pdp-hero-line);
     contain: layout style;
   }
@@ -158,6 +170,12 @@
     border-bottom: 1px solid var(--pdp-hero-line);
   }
 
+  .pdp-inline-tabs__accordion[open] .pdp-inline-tabs__accordion-summary {
+    border-bottom: 3px solid var(--pdp-accordion-border);
+    margin-bottom: 1rem;
+    color: var(--pdp-hero-ink);
+  }
+
   .pdp-inline-tabs__accordion-summary {
     display: flex;
     align-items: center;
@@ -165,8 +183,8 @@
     gap: 1rem;
     padding: 1rem 0;
     list-style: none;
-    color: var(--pdp-hero-ink);
-    font-size: 0.9375rem;
+    color: #31331E80;
+    font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
   }
@@ -176,19 +194,30 @@
   }
 
   .pdp-inline-tabs__accordion-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     flex: 0 0 auto;
-    transition: transform 0.2s ease;
+    color: black;
   }
 
-  .pdp-inline-tabs__accordion[open] .pdp-inline-tabs__accordion-icon {
-    transform: rotate(45deg);
+  .pdp-inline-tabs__accordion-icon-minus {
+    display: none;
+  }
+
+  .pdp-inline-tabs__accordion[open] .pdp-inline-tabs__accordion-icon-plus {
+    display: none;
+  }
+
+  .pdp-inline-tabs__accordion[open] .pdp-inline-tabs__accordion-icon-minus {
+    display: inline-flex;
   }
 
   .pdp-inline-tabs__accordion-content,
   .pdp-inline-tabs__content {
     padding-bottom: 1rem;
     color: var(--pdp-hero-muted);
-    font-size: 0.9375rem;
+    font-size: calc(14 / 16 * 1rem);
     line-height: 1.65;
   }
 
@@ -208,6 +237,7 @@
       display: flex;
       gap: 1.5rem;
       border-bottom: 1px solid var(--pdp-hero-line);
+      position: relative;
     }
 
     .pdp-inline-tabs__tab {
@@ -215,23 +245,40 @@
       padding: 1rem 0 0.875rem;
       border: 0;
       background: transparent;
-      color: #91917f;
-      font-size: 0.9375rem;
+      color: rgba(49, 51, 30, 0.5);
+      font-size: 1rem;
       cursor: pointer;
+      flex-grow: 1;
     }
 
     .pdp-inline-tabs__tab::after {
       content: '';
       position: absolute;
-      right: 0;
-      bottom: -1px;
-      left: 0;
-      height: 3px;
+      left: 100%;
+      bottom: -3px;
+      width: 0.375rem;
+      height: 0.375rem;
       border-radius: 999px;
       background: var(--pdp-hero-ink);
-      transform: scaleX(0);
       transform-origin: left center;
-      transition: transform 0.2s ease;
+      transition:
+        width 0.25s ease,
+        height 0.25s ease,
+        border-radius 0.25s ease,
+        bottom 0.25s ease;
+    }
+
+    .pdp-inline-tabs__desktop-indicator {
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      height: calc(13 / 16 * 1rem);
+      border-radius: 999px;
+      background: var(--pdp-hero-ink);
+      transition:
+        transform 0.28s ease,
+        width 0.28s ease;
+      pointer-events: none;
     }
 
     .pdp-inline-tabs__tab.is-active {
@@ -239,7 +286,7 @@
     }
 
     .pdp-inline-tabs__tab.is-active::after {
-      transform: scaleX(1);
+      opacity: 0;
     }
 
     .pdp-inline-tabs__desktop-panels {
