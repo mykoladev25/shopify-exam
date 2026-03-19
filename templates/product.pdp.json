@@ -395,20 +395,46 @@
             "side_effects": "None - 100% safe, drug-free"
           }
         },
-        "row_2": {
+        "row_Dkj7iY": {
           "type": "row",
           "settings": {
             "highlight": false,
+            "solution": "",
+            "how_it_works": "",
+            "what_to_consider": "",
+            "cost_over_time": "",
+            "side_effects": ""
+          }
+        },
+        "row_KYTyzi": {
+          "type": "row",
+          "settings": {
+            "highlight": false,
+            "icon": "shopify://shop_images/252e93f1e8ac72998153b1844218a899b98303a4.png",
             "solution": "Sleeping Pills",
             "how_it_works": "Sedate the brain with sleep-inducing chemicals",
             "what_to_consider": "Tolerance builds, grogginess, not long-term safe",
             "cost_over_time": "Ongoing",
             "side_effects": "Dependency & side effects"
           }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "highlight": false,
+            "icon": "shopify://shop_images/8ab7f75e1a9140798a6f43518174f2de6b3f2ddc.png",
+            "solution": "Pain Meds",
+            "how_it_works": "Block pain signals temporarily",
+            "what_to_consider": "Doesn't treat root cause, side effects common",
+            "cost_over_time": "High if chronic",
+            "side_effects": "Risk of addiction or long-term damage"
+          }
         }
       },
       "block_order": [
         "row_1",
+        "row_Dkj7iY",
+        "row_KYTyzi",
         "row_2"
       ],
       "settings": {
