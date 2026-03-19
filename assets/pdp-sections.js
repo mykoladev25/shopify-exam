@@ -119,6 +119,19 @@ const initComparison = (scope) => {
   if (!cards || !dots.length || scope.dataset.pdpComparisonInitialized === 'true') return;
 
   const cardEls = [...cards.querySelectorAll('.pdp-comparison__card')];
+  const mobileWrapper = scope.querySelector('.pdp-comparison__mobile');
+  const firstFeaturedValue = cards.querySelector('.pdp-comparison__mobile-featured-value');
+
+  const positionBand = () => {
+    if (!mobileWrapper || !firstFeaturedValue) return;
+    const wrapperRect = mobileWrapper.getBoundingClientRect();
+    const featuredRect = firstFeaturedValue.getBoundingClientRect();
+    mobileWrapper.style.setProperty('--band-top', `${featuredRect.top - wrapperRect.top}px`);
+    mobileWrapper.style.setProperty('--band-height', `${featuredRect.height}px`);
+  };
+
+  positionBand();
+  window.addEventListener('resize', positionBand);
 
   const updateDots = () => {
     if (!cardEls.length) return;

@@ -329,10 +329,32 @@
     align-items: start;
   }
 
-  .pdp-comparison__mobile-solution,
+  .pdp-comparison__mobile-solution {
+    min-width: 0;
+    overflow: visible;
+  }
+
   .pdp-comparison__mobile {
     min-width: 0;
     overflow: visible;
+    position: relative;
+    z-index: 2;
+  }
+
+  .pdp-comparison__mobile::before {
+    content: '';
+    position: absolute;
+    top: var(--band-top, 0);
+    height: var(--band-height, 0);
+    left: -0.875rem;
+    right: 0;
+    background-color: #5f8e43;
+    background-image: var(--pdp-comparison-highlight-bg);
+    background-position: 2%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+    pointer-events: none;
   }
 
   .pdp-comparison__mobile-panel {
@@ -340,11 +362,10 @@
     border-radius: 0.25rem;
     background: #fff;
     box-shadow: 0 0.424rem 1.061rem rgb(0 0 0 / 0.05);
-    overflow: hidden;
+    overflow: visible;
     min-width: 0;
     width: 100%;
     box-sizing: border-box;
-    padding-inline: 0.625rem;
   }
 
   .pdp-comparison__mobile-panel-heading {
@@ -359,17 +380,27 @@
   .pdp-comparison__mobile-featured-value {
     position: relative;
     min-height: 5.0625rem;
-    margin-inline: -0.625rem;
-    padding: 0.875rem calc(0.9375rem + 0.625rem);
-    width: auto;
+    margin: 0;
+    padding: 0.875rem 0.9375rem;
+    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
-    border-radius: 0;
     color: #fff;
+    background: transparent;
+    z-index: 1;
+  }
+
+  .pdp-comparison__mobile-solution-featured::before {
+    content: '';
+    position: absolute;
+    inset: 0 -0.875rem 0 0;
+    border-radius: 0.25rem 0 0 0.25rem;
     background-color: #5f8e43;
     background-image: var(--pdp-comparison-highlight-bg);
     background-position: 2%;
     background-size: cover;
     background-repeat: no-repeat;
+    z-index: -1;
   }
 
   .pdp-comparison__mobile-solution-featured {
@@ -440,7 +471,6 @@
     min-width: 0;
     width: 100%;
     box-sizing: border-box;
-    padding-inline: 0.625rem;
   }
 
   .pdp-comparison__mobile-featured-value {
@@ -448,12 +478,16 @@
     align-items: center;
     font-size: 0.6875rem;
     line-height: 1.18;
+    background-color: #5f8e43;
+    background-image: var(--pdp-comparison-highlight-bg);
+    background-position: 2%;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 
   .pdp-comparison__solution-icon {
     width: 2.375rem;
     height: 2.375rem;
-    object-fit: contain;
     flex: 0 0 auto;
   }
 
