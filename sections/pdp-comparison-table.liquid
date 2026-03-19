@@ -278,10 +278,12 @@
           data-product-url="{{ product.url }}"
           on:submit="/handleSubmit"
         >
+          <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
           {%- form 'product', product, id: product_form_id, data-type: 'add-to-cart-form' -%}
             <input
               type="hidden"
               name="id"
+              ref="variantId"
               value="{{ variant.id }}"
             >
             {% render 'add-to-cart-button',
@@ -401,7 +403,7 @@
 
   .pdp-comparison__mobile-value-row,
   .pdp-comparison__mobile-solution-row {
-    min-height: 5.8125rem;
+    min-height: 4.8125rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -413,7 +415,7 @@
   }
 
   .pdp-comparison__mobile-value-row {
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     padding-inline: 0.75rem;
   }
@@ -422,6 +424,12 @@
     flex-direction: column;
     gap: 0.5rem;
     text-align: center;
+    justify-content: flex-end;
+    position: relative;
+  }
+
+  .pdp-comparison__mobile-solution-row:has(.pdp-comparison__solution-icon) {
+    padding-top: 2.5rem;
   }
 
   .pdp-comparison__cards {
@@ -465,9 +473,11 @@
   }
 
   .pdp-comparison__solution-icon {
-    width: 2.375rem;
-    height: 2.375rem;
+    width: 3.375rem;
+    height: 3.375rem;
     flex: 0 0 auto;
+    position: absolute;
+    top: 0;
   }
 
   .pdp-comparison__solution-icon--featured {
@@ -523,7 +533,7 @@
 
     .pdp-comparison__heading {
       margin-bottom: 2rem;
-      font-size: clamp(2.75rem, 5vw, 4.375rem);
+      font-size: calc(64 / 16 * 1rem);
       line-height: 1.05;
     }
 
@@ -598,11 +608,21 @@
       z-index: -1;
     }
 
+    .pdp-comparison__desktop-row.is-highlighted::after {
+      content: '';
+      position: absolute;
+      inset: 0 -2.5rem;
+      border-radius: 0.3125rem;
+      border: 0.5px solid rgba(255, 255, 255, 0.5);
+      pointer-events: none;
+      z-index: 1;
+    }
+
     .pdp-comparison__desktop-row.is-highlighted .pdp-comparison__body-cell,
     .pdp-comparison__desktop-row.is-highlighted .pdp-comparison__solution-cell {
       color: #fff;
       border-color: rgb(255 255 255 / 0.18);
-      border-left: transparent;
+
     }
 
     .pdp-comparison__solution-cell,
