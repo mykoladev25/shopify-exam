@@ -103,6 +103,25 @@
               },
               "blocks": {}
             },
+            "pdp_benefits_inline": {
+              "type": "pdp-benefits-inline",
+              "settings": {
+                "heading": "Why you need this?",
+                "title_1": "",
+                "text_1": "",
+                "title_2": "",
+                "text_2": "",
+                "title_3": "",
+                "text_3": "",
+                "title_4": "",
+                "text_4": "",
+                "title_5": "",
+                "text_5": "",
+                "title_6": "",
+                "text_6": ""
+              },
+              "blocks": {}
+            },
             "variant_picker_main": {
               "type": "variant-picker",
               "settings": {
@@ -150,25 +169,6 @@
                 }
               },
               "block_order": []
-            },
-            "pdp_benefits_inline": {
-              "type": "pdp-benefits-inline",
-              "settings": {
-                "heading": "Why you need this?",
-                "title_1": "",
-                "text_1": "",
-                "title_2": "",
-                "text_2": "",
-                "title_3": "",
-                "text_3": "",
-                "title_4": "",
-                "text_4": "",
-                "title_5": "",
-                "text_5": "",
-                "title_6": "",
-                "text_6": ""
-              },
-              "blocks": {}
             },
             "pdp_social_proof_inline": {
               "type": "pdp-social-proof-inline",
@@ -289,6 +289,7 @@
           "type": "benefit",
           "settings": {
             "icon": "shopify://shop_images/Neurology--Streamline-Sharp-Material-Symbols_1.svg",
+            "icon_asset": "",
             "label": "Neurological & Mental Health",
             "image": "shopify://shop_images/blog1.jpg",
             "title": "Neurological & Mental Health",
@@ -301,6 +302,7 @@
           "type": "benefit",
           "settings": {
             "icon": "shopify://shop_images/Rheumatology--Streamline-Sharp-Material-Symbols_1.svg",
+            "icon_asset": "",
             "label": "Musculoskeletal Pain & Inflammation",
             "image": "shopify://shop_images/blog2.jpg",
             "title": "Musculoskeletal Pain & Inflammation",
@@ -313,6 +315,7 @@
           "type": "benefit",
           "settings": {
             "icon": "shopify://shop_images/Hematology--Streamline-Sharp-Material-Symbols_1.svg",
+            "icon_asset": "",
             "label": "Cardiovascular & Circulatory Health",
             "image": "shopify://shop_images/blog3.jpg",
             "title": "Cardiovascular & Circulatory Health",
@@ -325,6 +328,7 @@
           "type": "benefit",
           "settings": {
             "icon": "shopify://shop_images/Blur-Off--Streamline-Sharp-Material-Symbols_1.svg",
+            "icon_asset": "",
             "label": "Immune & Inflammatory Conditions",
             "image": "shopify://shop_images/blog4.jpg",
             "title": "Immune & Inflammatory Conditions",
@@ -336,7 +340,8 @@
         "benefit_tB9iVE": {
           "type": "benefit",
           "settings": {
-            "icon": "shopify://shop_images/Genetics--Streamline-Sharp-Material-Symbols_1.jpg",
+            "icon": "shopify://shop_images/Genetics--Streamline-Sharp-Material-Symbols_1_11d7dfe7-5ad5-4d68-a634-d1dd1a97c5f7.svg",
+            "icon_asset": "",
             "label": "Hormonal & Metabolic Balance",
             "image": "shopify://shop_images/blog5.jpg",
             "title": "Hormonal & Metabolic Balance",
@@ -349,6 +354,7 @@
           "type": "benefit",
           "settings": {
             "icon": "shopify://shop_images/Cardiology--Streamline-Sharp-Material-Symbols_1.svg",
+            "icon_asset": "",
             "label": "Specialized Support",
             "image": "shopify://shop_images/blog6.jpg",
             "title": "Specialized Support",
