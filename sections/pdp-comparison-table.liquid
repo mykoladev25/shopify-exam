@@ -23,6 +23,22 @@
   data-pdp-comparison
   style="--pdp-comparison-highlight-bg: url('{{ 'bg-linear.jpg' | asset_url }}');"
 >
+  {% liquid
+    assign product = closest.product
+    assign variant = product.selected_or_first_available_variant
+    assign can_add_to_cart = false
+    assign add_to_cart_text = 'products.product.unavailable' | t
+
+    if variant
+      if variant.available
+        assign can_add_to_cart = true
+        assign add_to_cart_text = 'products.product.add_to_cart' | t
+      elsif variant.inventory_management == 'shopify' and variant.inventory_quantity <= 0 and variant.inventory_policy == 'deny'
+        assign add_to_cart_text = 'products.product.sold_out' | t
+      endif
+    endif
+  %}
+
   <div class="pdp-comparison__inner">
     {% if section.settings.heading != blank %}
       <h2 class="pdp-comparison__heading">{{ section.settings.heading }}</h2>
@@ -254,29 +270,37 @@
     </div>
   </div>
 </div>
-{% liquid
-  assign class = 'add-to-cart-button ' | append: block.settings.style_class
-  assign id = 'BuyButtons-ProductSubmitButton-' | append: block.id
-%}
 
-<span
-  {{ block.shopify_attributes }}
-  style="--add-to-cart-font-case: {{ settings.button_text_case }};"
->
-  {% render 'add-to-cart-button',
-    id: id,
-    class: class,
-    can_add_to_cart: can_add_to_cart,
-    product: closest.product,
-    add_to_cart_text: add_to_cart_text,
-    data_testid: 'standalone-add-to-cart'
-  %}
-</span>
-
+      {% if product != blank %}
+        {%- assign product_form_id = 'PdpComparison-ProductForm-' | append: section.id -%}
+        <product-form-component
+          class="pdp-comparison__cta"
+          data-section-id="{{ section.id }}"
+          data-product-id="{{ product.id }}"
+          data-product-url="{{ product.url }}"
+          on:submit="/handleSubmit"
+        >
+          {%- form 'product', product, id: product_form_id, data-type: 'add-to-cart-form' -%}
+            <input
+              type="hidden"
+              name="id"
+              value="{{ variant.id }}"
+            >
+            {% render 'add-to-cart-button',
+              id: 'PdpComparison-SubmitButton-' | append: section.id,
+              class: 'add-to-cart-button button',
+              can_add_to_cart: can_add_to_cart,
+              product: product,
+              add_to_cart_text: 'ADD TO CART',
+              data_testid: 'pdp-comparison-add-to-cart'
+            %}
+          {%- endform -%}
+        </product-form-component>
+      {% endif %}
 {% stylesheet %}
   .pdp-comparison {
-    padding: 0.5rem 0 2rem;
-    background: #f7f3eb;
+    padding: 0.5rem 0 0.5rem;
+    background: #F4F3EE;
     content-visibility: auto;
     contain-intrinsic-size: 1px 920px;
   }
@@ -326,7 +350,7 @@
   .pdp-comparison__mobile-solution-featured,
   .pdp-comparison__mobile-featured-value {
     min-height: 5.0625rem;
-    margin: 0 -0.75rem;
+    margin: 0;
     padding: 0.875rem 0.9375rem;
     background-image: var(--pdp-comparison-highlight-bg);
     background-position: center;
@@ -456,6 +480,22 @@
     background: #a8ca1b;
   }
 
+  .pdp-comparison__cta .button.add-to-cart-button {
+    width: 100%;
+    max-width: calc(350 / 16 * 1rem);
+    min-height: 4.1875rem;
+    margin: 0 auto;
+    border: 0;
+    border-radius: 999px;
+    background: #a8ca1b;
+    color: #31331e;
+    font-family: var(--font-recoleta);
+    font-size: 1.875rem;
+    font-weight: 400;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
   @media screen and (min-width: 750px) {
     .pdp-comparison {
       padding: 1rem 0 4rem;
@@ -473,6 +513,10 @@
 
     .pdp-comparison__desktop {
       display: block;
+    }
+
+    .pdp-comparison__cta .button.add-to-cart-button {
+      max-width: calc(372 / 16 * 1rem);
     }
 
     .pdp-comparison__desktop-shell {
@@ -639,6 +683,11 @@
           "type": "text",
           "id": "solution",
           "label": "Solution"
+        },
+        {
+          "type": "image_picker",
+          "id": "solution_logo",
+          "label": "Solution logo"
         },
         {
           "type": "textarea",
