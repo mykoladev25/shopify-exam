@@ -286,14 +286,7 @@
               ref="variantId"
               value="{{ variant.id }}"
             >
-            {% render 'add-to-cart-button',
-              id: 'PdpComparison-SubmitButton-' | append: section.id,
-              class: 'add-to-cart-button button',
-              can_add_to_cart: can_add_to_cart,
-              product: product,
-              add_to_cart_text: 'ADD TO CART',
-              data_testid: 'pdp-comparison-add-to-cart'
-            %}
+            {% render 'add-to-cart-button', id: 'PdpComparison-SubmitButton-', append: section.id, class: 'add-to-cart-button button', can_add_to_cart: can_add_to_cart, product: product, add_to_cart_text: 'ADD TO CART', data_testid: 'pdp-comparison-add-to-cart' %}
           {%- endform -%}
         </product-form-component>
       {% endif %}
@@ -802,3 +795,24 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'add-to-cart-button',
+                  id: 'PdpComparison-SubmitButton-' | append: section.id,
+                  class: 'add-to-cart-button button',
+                  can_add_to_cart: can_add_to_cart,
+                  product: product,
+                  add_to_cart_text: 'ADD TO CART',
+                  data_testid: 'pdp-comparison-add-to-cart'
+                %}
+  to: "{% render 'add-to-cart-button', id: 'PdpComparison-SubmitButton-', append:
+    section.id, class: 'add-to-cart-button button', can_add_to_cart: can_add_to_cart,
+    product: product, add_to_cart_text: 'ADD TO CART', data_testid: 'pdp-comparison-add-to-cart'
+    %}"
+  position: 13416..13668
+{% endcomment %}
